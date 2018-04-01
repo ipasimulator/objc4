@@ -83,6 +83,8 @@ class nocopy_t {
 // [port] TODO: Where is this officialy defined?
 #define __BEGIN_DECLS extern "C" {
 #define __END_DECLS }
+
+#include <pthread.h>
 #else
 #   include <stdio.h>
 #   include <stdlib.h>
@@ -670,9 +672,12 @@ OBJC_EXTERN IMAGE_DOS_HEADER __ImageBase;
 
 // OS compatibility
 
+// [port] CHANGE: This seems to be unused.
+#ifndef OBJC_PORT
 static inline uint64_t nanoseconds() {
     return mach_absolute_time();
 }
+#endif
 
 // Internal data types
 
