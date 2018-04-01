@@ -28,10 +28,7 @@
 #include <Availability.h>
 #include <AvailabilityMacros.h>
 #include <TargetConditionals.h>
-// [port] CHANGE: We try to use the MacOSX as little as possible.
-#ifndef OBJC_PORT
 #include <sys/types.h>
-#endif
 
 #ifndef __has_feature
 #   define __has_feature(x) 0
