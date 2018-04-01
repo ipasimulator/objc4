@@ -45,9 +45,13 @@
 static inline uint32_t word_align(uint32_t x) {
     return (x + WORD_MASK) & ~WORD_MASK;
 }
+// [port] CHANGE: This was causing redefinition error.
+// [port] TODO: Why?
+#ifndef OBJC_PORT
 static inline size_t word_align(size_t x) {
     return (x + WORD_MASK) & ~WORD_MASK;
 }
+#endif
 
 
 // Mix-in for classes that must not be copied.

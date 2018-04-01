@@ -32,7 +32,10 @@
 #include <TargetConditionals.h>
 
 #if TARGET_OS_MAC
+// [port] CHANGE: We try to use the MacOSX SDK as little as possible.
+#ifndef OBJC_PORT
 #include <sys/types.h>
+#endif
 #endif
 
 

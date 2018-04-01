@@ -28,9 +28,18 @@
 #ifndef _OBJC_OBJC_H_
 #define _OBJC_OBJC_H_
 
+// [port] CHANGE: __DARWIN_NULL is redefined in objc-api.h anyway.
+#ifndef OBJC_PORT
 #include <sys/types.h>      // for __DARWIN_NULL
+#endif
 #include <Availability.h>
+// [port] CHANGE: This was <objc/objc-api.h> originally, which would take it from
+// [port] the MacOSX SDK, but this is better since we can modify the header.
+#ifdef OBJC_PORT
+#include "objc-api.h"
+#else
 #include <objc/objc-api.h>
+#endif
 #include <stdbool.h>
 
 #if !OBJC_TYPES_DEFINED
