@@ -41,7 +41,11 @@
 #define OBJC_TYPES_DEFINED 1
 #define OBJC_OLD_DISPATCH_PROTOTYPES 0
 
+ // [port] CHANGE: <cstddef> doesn't play nicely with clang.
+ // [port] TODO: Revert this when newer clang is used.
+#ifndef OBJC_PORT
 #include <cstddef>  // for nullptr_t
+#endif
 #include <stdint.h>
 #include <assert.h>
 

@@ -24,7 +24,11 @@
 #ifndef _OBJC_RUNTIME_H
 #define _OBJC_RUNTIME_H
 
+#ifdef OBJC_PORT
+#include "objc.h"
+#else
 #include <objc/objc.h>
+#endif
 #include <stdarg.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -2006,7 +2010,7 @@ OBJC_EXPORT id _Nullable
      OBJC2_UNAVAILABLE;
      
 OBJC_EXPORT void
-(* _Nonnull _error)(id _Nullable, const char * _Nonnull, va_list)
+(* _Nonnull _error)(id _Nullable, const char * _Nonnull, va_list) // [port] TODO: va_list shouldn't be a pointer, but rather some clang's intrinsic...
      OBJC2_UNAVAILABLE;
 
 #endif

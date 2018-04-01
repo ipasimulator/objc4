@@ -45,9 +45,13 @@
 static inline uint32_t word_align(uint32_t x) {
     return (x + WORD_MASK) & ~WORD_MASK;
 }
+// [port] CHANGE: This was causing a redefinition error.
+// [port] TODO: Why?
+#ifndef OBJC_PORT
 static inline size_t word_align(size_t x) {
     return (x + WORD_MASK) & ~WORD_MASK;
 }
+#endif
 
 
 // Mix-in for classes that must not be copied.
@@ -69,6 +73,17 @@ class nocopy_t {
 #       define __STDC_LIMIT_MACROS
 #   endif
 
+#ifdef OBJC_PORT
+// [port] From MacOSX SDK's <sys/cdefs.h>.
+/* [MacOSX SDK] __unused denotes variables and functions that may not be used, preventing
+ * [MacOSX SDK] the compiler from warning about it if not used.
+ */
+#define __unused	__attribute__((unused))
+
+// [port] TODO: Where is this officialy defined?
+#define __BEGIN_DECLS extern "C" {
+#define __END_DECLS }
+#else
 #   include <stdio.h>
 #   include <stdlib.h>
 #   include <stdint.h>
@@ -106,6 +121,7 @@ class nocopy_t {
 #   include <libkern/OSCacheControl.h>
 #   include <System/pthread_machdep.h>
 #   include "objc-probes.h"  // generated dtrace probe definitions.
+#endif
 
 // Some libc functions call objc_msgSend() 
 // so we can't use them without deadlocks.
@@ -119,6 +135,12 @@ void vsyslog(int, const char *, va_list) UNAVAILABLE_ATTRIBUTE;
 #define fastpath(x) (__builtin_expect(bool(x), 1))
 #define slowpath(x) (__builtin_expect(bool(x), 0))
 
+// [port] CHANGE: If these are not redefined like follows, compiler complains.
+// [port] TODO: Why?
+#ifdef OBJC_PORT
+#	define __builtin_addcl __builtin_addc
+#	define __builtin_subcl __builtin_subc
+#endif
 
 static ALWAYS_INLINE uintptr_t 
 addc(uintptr_t lhs, uintptr_t rhs, uintptr_t carryin, uintptr_t *carryout)
@@ -326,8 +348,13 @@ ClearExclusive(uintptr_t *dst __unused)
 #endif
 
 
+#ifdef OBJC_PORT
+#include "objc.h"
+#include "objc-api.h"
+#else
 #include <objc/objc.h>
 #include <objc/objc-api.h>
+#endif
 
 extern void _objc_fatal(const char *fmt, ...) 
     __attribute__((noreturn, format (printf, 1, 2)));

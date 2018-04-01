@@ -28,10 +28,15 @@
 #ifndef _OBJC_OBJC_H_
 #define _OBJC_OBJC_H_
 
+#ifdef OBJC_PORT
+#include <Availability.h>
+#include "objc-api.h"
+#else
 #include <sys/types.h>      // for __DARWIN_NULL
 #include <Availability.h>
 #include <objc/objc-api.h>
 #include <stdbool.h>
+#endif // not OBJC_PORT
 
 #if !OBJC_TYPES_DEFINED
 /// An opaque type that represents an Objective-C class.
