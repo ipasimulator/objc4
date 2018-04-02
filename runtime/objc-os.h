@@ -85,6 +85,7 @@ class nocopy_t {
 #define __END_DECLS }
 
 #include <pthread.h>
+#include <System/pthread_machdep.h>
 #else
 #   include <stdio.h>
 #   include <stdlib.h>
