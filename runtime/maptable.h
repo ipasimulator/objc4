@@ -38,7 +38,12 @@
 #   define OBJC_MAP_AVAILABILITY
 #endif
 
+// [port] CHANGE: We wanna use "..." includes instead of <objc/...> ones.
+#ifdef OBJC_PORT
+#include "objc.h"
+#else
 #include <objc/objc.h>
+#endif // [port] !OBJC_PORT
 
 __BEGIN_DECLS
 

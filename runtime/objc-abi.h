@@ -37,11 +37,21 @@
  * objc-abi.h: Declarations for functions used by compiler codegen.
  */
 
+// [port] CHANGE: Trying to use external headers as little as possible.
+#ifndef OBJC_PORT
 #include <malloc/malloc.h>
+#endif // [port] !OBJC_PORT
 #include <TargetConditionals.h>
+// [port] CHANGE: We wanna use "..." includes instead of <objc/...> ones.
+#ifdef OBJC_PORT
+#include "objc.h"
+#include "runtime.h"
+#include "message.h"
+#else
 #include <objc/objc.h>
 #include <objc/runtime.h>
 #include <objc/message.h>
+#endif // [port] !OBJC_PORT
 
 /* Runtime startup. */
 

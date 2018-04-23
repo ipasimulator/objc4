@@ -24,8 +24,14 @@
 #ifndef _OBJC_MESSAGE_H
 #define _OBJC_MESSAGE_H
 
+// [port] CHANGE: We wanna use "..." includes instead of <objc/...> ones.
+#ifdef OBJC_PORT
+#include "objc.h"
+#include "runtime.h"
+#else
 #include <objc/objc.h>
 #include <objc/runtime.h>
+#endif // [port] !OBJC_PORT
 
 #ifndef OBJC_SUPER
 #define OBJC_SUPER
