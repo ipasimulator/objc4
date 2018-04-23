@@ -706,6 +706,9 @@ static inline void tls_set(tls_key_t k, void *value) {
     pthread_setspecific(k, value); 
 }
 
+// [port] CHANGE: These require disabled functions from the pthread_machdep.h header.
+#ifndef OBJC_PORT
+
 #if SUPPORT_DIRECT_THREAD_KEYS
 
 #if DEBUG
@@ -769,6 +772,7 @@ static inline pthread_priority_t pthread_self_priority_direct()
 }
 #endif
 
+#endif // [port] OBJC_PORT
 
 template <bool Debug> class mutex_tt;
 template <bool Debug> class monitor_tt;
