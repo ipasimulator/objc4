@@ -85,7 +85,7 @@ class nocopy_t {
 #define __END_DECLS }
 
 #include <pthread.h>
-#include <System/pthread_machdep.h>
+#include <System/pthread_machdep.h> // [port] TODO: Not needed right now.
 #else
 #   include <stdio.h>
 #   include <stdlib.h>
@@ -799,6 +799,10 @@ extern const fork_unsafe_lock_t fork_unsafe_lock;
 
 #include "objc-lockdebug.h"
 
+// [port] CHANGE: Not supporting os_unfair_lock-based locks right now.
+// [port] However, see "os/lock.h" where it's defined.
+#ifndef OBJC_PORT
+
 template <bool Debug>
 class mutex_tt : nocopy_t {
     os_unfair_lock mLock;
@@ -867,6 +871,7 @@ class mutex_tt : nocopy_t {
 
 using mutex_locker_t = mutex_tt<LOCKDEBUG>::locker;
 
+#endif // [port] OBJC_PORT
 
 template <bool Debug>
 class recursive_mutex_tt : nocopy_t {
@@ -1002,6 +1007,8 @@ class monitor_tt {
     }
 };
 
+// [port] CHANGE: We are not supporting "semaphore_t" right now.
+#ifndef OBJC_PORT
 
 // semaphore_create formatted for INIT_ONCE use
 static inline semaphore_t create_semaphore(void)
@@ -1013,6 +1020,7 @@ static inline semaphore_t create_semaphore(void)
     return sem;
 }
 
+#endif // [port] OBJC_PORT
 
 #if SUPPORT_QOS_HACK
 // Override QOS class to avoid priority inversion in rwlocks
@@ -1188,9 +1196,13 @@ typedef struct section_64 sectionType;
 
 // Prototypes
 
+// [port] CHANGE: Don't know what it is, don't support it.
+#ifndef OBJC_PORT
+
 /* Secure /tmp usage */
 extern int secure_open(const char *filename, int flags, uid_t euid);
 
+#endif // [port] OBJC_PORT
 
 #else
 
@@ -1200,6 +1212,8 @@ extern int secure_open(const char *filename, int flags, uid_t euid);
 
 #endif
 
+// [port] CHANGE: Not supporting those right now.
+#ifndef OBJC_PORT
 
 static inline void *
 memdup(const void *mem, size_t len)
@@ -1240,6 +1254,8 @@ ustrdupMaybeNil(const uint8_t *str)
     if (!str) return nil;
     return (uint8_t *)strdupIfMutable((char *)str);
 }
+
+#endif // [port] OBJC_PORT
 
 // OS version checking:
 //
@@ -1300,6 +1316,9 @@ ustrdupMaybeNil(const uint8_t *str)
     (unsigned  char)(((uint32_t)(v))>>8),   \
     (unsigned  char)(((uint32_t)(v))>>0)
 
+// [port] CHANGE: Not supporting those custom locks.
+#ifndef OBJC_PORT
+
 // fork() safety requires careful tracking of all locks.
 // Our custom lock types check this in debug builds.
 // Disallow direct use of all other lock types.
@@ -1307,6 +1326,8 @@ typedef __darwin_pthread_mutex_t pthread_mutex_t UNAVAILABLE_ATTRIBUTE;
 typedef __darwin_pthread_rwlock_t pthread_rwlock_t UNAVAILABLE_ATTRIBUTE;
 typedef int32_t OSSpinLock UNAVAILABLE_ATTRIBUTE;
 typedef struct os_unfair_lock_s os_unfair_lock UNAVAILABLE_ATTRIBUTE;
+
+#endif
 
 
 #endif
