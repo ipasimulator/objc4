@@ -427,6 +427,10 @@ static __inline void bzero(void *dst, size_t size) { memset(dst, 0, size); }
 
 int asprintf(char **dstp, const char *format, ...);
 
+#endif // [port] TARGET_OS_WIN32
+// [port] CHANGE: We want these stubs in our port!
+#if TARGET_OS_WIN32 || defined(OBJC_PORT)
+
 typedef void * malloc_zone_t;
 
 static __inline malloc_zone_t malloc_default_zone(void) { return (malloc_zone_t)-1; }
@@ -436,7 +440,6 @@ static __inline void *malloc_zone_realloc(malloc_zone_t z, void *p, size_t size)
 static __inline void malloc_zone_free(malloc_zone_t z, void *p) { free(p); }
 static __inline malloc_zone_t malloc_zone_from_ptr(const void *p) { return (malloc_zone_t)-1; }
 static __inline size_t malloc_size(const void *p) { return _msize((void*)p); /* fixme invalid pointer check? */ }
-
 
 // OSAtomic
 
@@ -468,6 +471,9 @@ static __inline int32_t OSAtomicIncrement32Barrier(volatile int32_t *dst)
 {
     return InterlockedIncrement((volatile long *)dst);
 }
+
+#endif // [port] TARGET_OS_WIN32 || defined(OBJC_PORT)
+#if TARGET_OS_WIN32
 
 
 // Internal data types
@@ -800,7 +806,7 @@ extern const fork_unsafe_lock_t fork_unsafe_lock;
 #include "objc-lockdebug.h"
 
 // [port] CHANGE: Not supporting os_unfair_lock-based locks right now.
-// [port] However, see "os/lock.h" where it's defined.
+// [port] Anyway, see "os/lock.h" where it's defined.
 #ifndef OBJC_PORT
 
 template <bool Debug>
@@ -1212,9 +1218,6 @@ extern int secure_open(const char *filename, int flags, uid_t euid);
 
 #endif
 
-// [port] CHANGE: Not supporting those right now.
-#ifndef OBJC_PORT
-
 static inline void *
 memdup(const void *mem, size_t len)
 {
@@ -1222,6 +1225,9 @@ memdup(const void *mem, size_t len)
     memcpy(dup, mem, len);
     return dup;
 }
+
+// [port] CHANGE: Not supporting those right now.
+#ifndef OBJC_PORT
 
 // strdup that doesn't copy read-only memory
 static inline char *
