@@ -36,7 +36,7 @@
 
 #define _OBJC_PRIVATE_H_
 #include <stdint.h>
-// [port] CHANGE: We wanna use "..." includes instead of <objc/...> ones.
+// [port] CHANGED: We wanna use "..." includes instead of <objc/...> ones.
 #ifdef OBJC_PORT
 #include "hashtable.h"
 #include "maptable.h"

@@ -45,7 +45,7 @@
 static inline uint32_t word_align(uint32_t x) {
     return (x + WORD_MASK) & ~WORD_MASK;
 }
-// [port] CHANGE: This was causing a redefinition error.
+// [port] CHANGED: This was causing a redefinition error.
 // [port] TODO: Why?
 #ifndef OBJC_PORT
 static inline size_t word_align(size_t x) {
@@ -139,7 +139,7 @@ void vsyslog(int, const char *, va_list) UNAVAILABLE_ATTRIBUTE;
 #define fastpath(x) (__builtin_expect(bool(x), 1))
 #define slowpath(x) (__builtin_expect(bool(x), 0))
 
-// [port] CHANGE: If these are not redefined like follows, compiler complains.
+// [port] CHANGED: If these are not redefined like follows, compiler complains.
 // [port] TODO: Why?
 #ifdef OBJC_PORT
 #	define __builtin_addcl __builtin_addc
@@ -302,8 +302,8 @@ ClearExclusive(uintptr_t *dst __unused)
     OBJC_EXTERN __attribute__((noinline, used, visibility("hidden"))) \
     prototype { asm(""); }
 
-#endif // [port] CHANGE: We want these, too, so changing elif to if.
-#if TARGET_OS_WIN32 || defined(OBJC_PORT) // [port] CHANGE: We want these Windows headers!
+#endif // [port] CHANGED: We want these, too, so changing elif to if.
+#if TARGET_OS_WIN32 || defined(OBJC_PORT) // [port] CHANGED: We want these Windows headers!
 
 #   define WINVER 0x0501		// target Windows XP and later
 #   define _WIN32_WINNT 0x0501	// target Windows XP and later
@@ -334,7 +334,7 @@ ClearExclusive(uintptr_t *dst __unused)
 #       define __END_DECLS   /*empty*/
 #   endif
 
-// [port] CHANGE: Not redefining these.
+// [port] CHANGED: Not redefining these.
 #ifndef OBJC_PORT
 #   define PRIVATE_EXTERN
 #   define __attribute__(x)
@@ -414,7 +414,7 @@ extern void _objc_fatal_with_reason(uint64_t reason, uint64_t flags,
 #   define SUPPORT_DIRECT_THREAD_KEYS 0
 #endif
 
-// [port] CHANGE: We want these stubs in our port!
+// [port] CHANGED: We want these stubs in our port!
 #if TARGET_OS_WIN32 || defined(OBJC_PORT)
 
 // Compiler compatibility
@@ -473,7 +473,7 @@ static __inline int32_t OSAtomicIncrement32Barrier(volatile int32_t *dst)
     return InterlockedIncrement((volatile long *)dst);
 }
 
-// [port] CHANGE: Added these OSAtomic function support.
+// [port] CHANGED: Added these OSAtomic function support.
 // [port] Signatures copied from "libkern/OSAtomicDeprecated.h".
 static __inline int32_t	OSAtomicOr32Barrier(uint32_t val, volatile uint32_t *dst)
 {
@@ -691,7 +691,7 @@ OBJC_EXTERN IMAGE_DOS_HEADER __ImageBase;
 
 // OS compatibility
 
-// [port] CHANGE: Porting with <chrono>.
+// [port] CHANGED: Porting with <chrono>.
 #ifdef OBJC_PORT
 static inline uint64_t nanoseconds() {
     return std::chrono::time_point_cast<std::chrono::nanoseconds>(
@@ -771,7 +771,7 @@ static inline void tls_set_direct(tls_key_t k, void *value)
 // SUPPORT_DIRECT_THREAD_KEYS
 #endif
 
-// [port] CHANGE: Not supporting these right now.
+// [port] CHANGED: Not supporting these right now.
 #ifndef OBJC_PORT
 
 static inline pthread_t pthread_self_direct()
@@ -822,7 +822,7 @@ extern const fork_unsafe_lock_t fork_unsafe_lock;
 
 #include "objc-lockdebug.h"
 
-// [port] CHANGE: Not supporting os_unfair_lock-based locks right now.
+// [port] CHANGED: Not supporting os_unfair_lock-based locks right now.
 // [port] Anyway, see "os/lock.h" where it's defined.
 #ifndef OBJC_PORT
 
@@ -1030,7 +1030,7 @@ class monitor_tt {
     }
 };
 
-// [port] CHANGE: We are not supporting "semaphore_t" right now.
+// [port] CHANGED: We are not supporting "semaphore_t" right now.
 #ifndef OBJC_PORT
 
 // semaphore_create formatted for INIT_ONCE use
@@ -1219,7 +1219,7 @@ typedef struct section_64 sectionType;
 
 // Prototypes
 
-// [port] CHANGE: Don't know what it is, don't support it.
+// [port] CHANGED: Don't know what it is, don't support it.
 #ifndef OBJC_PORT
 
 /* Secure /tmp usage */
@@ -1243,7 +1243,7 @@ memdup(const void *mem, size_t len)
     return dup;
 }
 
-// [port] CHANGE: Adding stub.
+// [port] CHANGED: Adding stub.
 #ifdef OBJC_PORT
 // [port] Signature copied from the "dyld-519.2.2/dyld3/APIs.h" header.
 constexpr bool objc_port_is_memory_immutable(const void* addr, size_t length) {
@@ -1279,7 +1279,7 @@ freeIfMutable(char *str)
     }
 }
 
-// [port] CHANGE: Undefining our stub.
+// [port] CHANGED: Undefining our stub.
 #ifdef OBJC_PORT
 #undef _dyld_is_memory_immutable
 #endif
@@ -1351,7 +1351,7 @@ ustrdupMaybeNil(const uint8_t *str)
     (unsigned  char)(((uint32_t)(v))>>8),   \
     (unsigned  char)(((uint32_t)(v))>>0)
 
-// [port] CHANGE: Not supporting those custom locks.
+// [port] CHANGED: Not supporting those custom locks.
 #ifndef OBJC_PORT
 
 // fork() safety requires careful tracking of all locks.

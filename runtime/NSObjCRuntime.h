@@ -6,7 +6,7 @@
 #define _OBJC_NSOBJCRUNTIME_H_
 
 #include <TargetConditionals.h>
-// [port] CHANGE: Using "" instead of <>.
+// [port] CHANGED: Using "" instead of <>.
 #ifdef OBJC_PORT
 #include "objc.h"
 #else

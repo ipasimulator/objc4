@@ -37,7 +37,7 @@
  * objc-internal.h: Private SPI for use by other system frameworks.
  */
 
- // [port] CHANGE: We wanna use "..." includes instead of <objc/...> ones.
+ // [port] CHANGED: We wanna use "..." includes instead of <objc/...> ones.
 #ifdef OBJC_PORT
 #include "objc.h"
 #include "runtime.h"
@@ -46,7 +46,7 @@
 #include <objc/runtime.h>
 #endif // [port] !OBJC_PORT
 #include <Availability.h>
-// [port] CHANGE: Trying to use external headers as little as possible.
+// [port] CHANGED: Trying to use external headers as little as possible.
 #ifndef OBJC_PORT 
 #include <malloc/malloc.h>
 #include <dispatch/dispatch.h>

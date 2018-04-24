@@ -24,7 +24,7 @@
 #ifndef _OBJC_WEAK_H_
 #define _OBJC_WEAK_H_
 
-// [port] CHANGE: Using "" instead of <>.
+// [port] CHANGED: Using "" instead of <>.
 #ifdef OBJC_PORT
 #include "objc.h"
 #else
