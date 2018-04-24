@@ -7,8 +7,14 @@
 
 #if __OBJC__
 
+// [objc] CHANGE: Using "" instead of <>.
+#ifdef OBJC_PORT
+#include "objc.h"
+#include "NSObjCRuntime.h"
+#else
 #include <objc/objc.h>
 #include <objc/NSObjCRuntime.h>
+#endif // [port] !OBJC_PORT
 
 @class NSString, NSMethodSignature, NSInvocation;
 

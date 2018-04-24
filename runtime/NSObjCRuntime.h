@@ -6,7 +6,12 @@
 #define _OBJC_NSOBJCRUNTIME_H_
 
 #include <TargetConditionals.h>
+// [port] CHANGE: Using "" instead of <>.
+#ifdef OBJC_PORT
+#include "objc.h"
+#else
 #include <objc/objc.h>
+#endif // [port] !OBJC_PORT
 
 #if __LP64__ || (TARGET_OS_EMBEDDED && !TARGET_OS_IPHONE) || TARGET_OS_WIN32 || NS_BUILD_32_LIKE_64
 typedef long NSInteger;

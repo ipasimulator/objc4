@@ -28,7 +28,12 @@
 #include "llvm-DenseMap.h"
 #include "NSObject.h"
 
+// [objc] CHANGE: Including Windows's <malloc.h>
+#ifdef OBJC_PORT
+#include <malloc.h>
+#else
 #include <malloc/malloc.h>
+#endif // [port] !OBJC_PORT
 #include <stdint.h>
 #include <stdbool.h>
 #include <mach/mach.h>
