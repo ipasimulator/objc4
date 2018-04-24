@@ -334,6 +334,8 @@ ClearExclusive(uintptr_t *dst __unused)
 #       define __END_DECLS   /*empty*/
 #   endif
 
+// [port] CHANGE: Not redefining these.
+#ifndef OBJC_PORT
 #   define PRIVATE_EXTERN
 #   define __attribute__(x)
 #   define inline __inline
@@ -343,6 +345,7 @@ ClearExclusive(uintptr_t *dst __unused)
    BREAKPOINT_FUNCTION( void MyBreakpointFunction(void) ); */
 #   define BREAKPOINT_FUNCTION(prototype) \
     __declspec(noinline) prototype { __asm { } }
+#endif // [port] !OBJC_PORT
 
 /* stub out dtrace probes */
 #   define OBJC_RUNTIME_OBJC_EXCEPTION_RETHROW() do {} while(0)  
