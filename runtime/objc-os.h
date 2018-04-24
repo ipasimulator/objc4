@@ -86,6 +86,7 @@ class nocopy_t {
 
 #include <pthread.h>
 #include <System/pthread_machdep.h> // [port] TODO: Not needed right now.
+#include <chrono> // [port] for high_resolution_clock
 #else
 #   include <stdio.h>
 #   include <stdlib.h>
@@ -691,12 +692,18 @@ OBJC_EXTERN IMAGE_DOS_HEADER __ImageBase;
 
 // OS compatibility
 
-// [port] CHANGE: This seems to be unused.
-#ifndef OBJC_PORT
+// [port] CHANGE: Porting with <chrono>.
+#ifdef OBJC_PORT
+static inline uint64_t nanoseconds() {
+    return std::chrono::time_point_cast<std::chrono::nanoseconds>(
+        std::chrono::high_resolution_clock::now())
+        .time_since_epoch().count();
+}
+#else
 static inline uint64_t nanoseconds() {
     return mach_absolute_time();
 }
-#endif
+#endif // [port] !OBJC_PORT
 
 // Internal data types
 
