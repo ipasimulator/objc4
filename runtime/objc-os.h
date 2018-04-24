@@ -301,7 +301,8 @@ ClearExclusive(uintptr_t *dst __unused)
     OBJC_EXTERN __attribute__((noinline, used, visibility("hidden"))) \
     prototype { asm(""); }
 
-#elif TARGET_OS_WIN32
+#endif // [port] CHANGE: We want these, too, so changing elif to if.
+#if TARGET_OS_WIN32 || defined(OBJC_PORT) // [port] CHANGE: We want these Windows headers!
 
 #   define WINVER 0x0501		// target Windows XP and later
 #   define _WIN32_WINNT 0x0501	// target Windows XP and later
@@ -470,6 +471,17 @@ static __inline int32_t OSAtomicDecrement32Barrier(volatile int32_t *dst)
 static __inline int32_t OSAtomicIncrement32Barrier(volatile int32_t *dst)
 {
     return InterlockedIncrement((volatile long *)dst);
+}
+
+// [port] CHANGE: Added these OSAtomic function support.
+// [port] Signatures copied from "libkern/OSAtomicDeprecated.h".
+static __inline int32_t	OSAtomicOr32Barrier(uint32_t val, volatile uint32_t *dst)
+{
+    return InterlockedOr(reinterpret_cast<volatile long *>(dst), val);
+}
+static __inline int32_t OSAtomicXor32Barrier(uint32_t val, volatile uint32_t *dst)
+{
+    return InterlockedXor(reinterpret_cast<volatile long *>(dst), val);
 }
 
 #endif // [port] TARGET_OS_WIN32 || defined(OBJC_PORT)
