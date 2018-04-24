@@ -26,6 +26,7 @@
 
 #ifdef OBJC_PORT
 #include "objc.h"
+#include <atomic> // [port] for atomic_thread_fence
 #else
 #include <objc/objc.h>
 #endif
