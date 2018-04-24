@@ -414,8 +414,8 @@ extern void _objc_fatal_with_reason(uint64_t reason, uint64_t flags,
 #   define SUPPORT_DIRECT_THREAD_KEYS 0
 #endif
 
-
-#if TARGET_OS_WIN32
+// [port] CHANGE: We want these stubs in our port!
+#if TARGET_OS_WIN32 || defined(OBJC_PORT)
 
 // Compiler compatibility
 
@@ -431,10 +431,6 @@ static __inline void bcopy(const void *src, void *dst, size_t size) { memcpy(dst
 static __inline void bzero(void *dst, size_t size) { memset(dst, 0, size); }
 
 int asprintf(char **dstp, const char *format, ...);
-
-#endif // [port] TARGET_OS_WIN32
-// [port] CHANGE: We want these stubs in our port!
-#if TARGET_OS_WIN32 || defined(OBJC_PORT)
 
 typedef void * malloc_zone_t;
 
