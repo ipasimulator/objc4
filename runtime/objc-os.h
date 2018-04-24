@@ -1245,11 +1245,11 @@ memdup(const void *mem, size_t len)
 
 // [port] CHANGE: Adding stub.
 #ifdef OBJC_PORT
-// [objc] Signature copied from the "dyld-519.2.2/dyld3/APIs.h" header.
+// [port] Signature copied from the "dyld-519.2.2/dyld3/APIs.h" header.
 constexpr bool _dyld_is_memory_immutable(const void* addr, size_t length) {
-    // [objc] Let's say everything is immutable so that the strdupIfMutable and related
-    // [objc] functions copy the key always (even if it's not necessary, just to be sure).
-    // [objc] TODO: Actually find out if the memory is immutable!
+    // [port] Let's say everything is immutable so that the strdupIfMutable and related
+    // [port] functions copy the key always (even if it's not necessary, just to be sure).
+    // [port] TODO: Actually find out if the memory is immutable!
     return false;
 }
 #endif
@@ -1277,6 +1277,10 @@ freeIfMutable(char *str)
         free(str);
     }
 }
+
+// [port] TODO: undef _dyld_is_memory_immutable here,
+// [port] so we are sure it's not used elsewhere.
+// [port] (Or maybe define some dummy macro for it...)
 
 // nil-checking unsigned strdup
 static inline uint8_t *
