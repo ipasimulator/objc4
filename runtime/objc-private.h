@@ -446,9 +446,12 @@ public:
         return mhdr()->filetype == MH_BUNDLE;
     }
 
+// [port] CHANGE: We don't support "dyld_image_path_containing_address" right now.
+#ifndef OBJC_PORT
     const char *fname() const {
         return dyld_image_path_containing_address(mhdr());
     }
+#endif // [port] !OBJC_PORT
 
     bool isPreoptimized() const;
 
