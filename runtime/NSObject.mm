@@ -169,7 +169,10 @@ struct SideTable {
 
     void lock() { slock.lock(); }
     void unlock() { slock.unlock(); }
+// [port] CHANGED: mutex_tt.forceReset is not implemented.
+#ifndef OBJC_PORT
     void forceReset() { slock.forceReset(); }
+#endif
 
     // Address-ordered lock discipline for a pair of side tables.
 
@@ -249,9 +252,12 @@ void SideTableUnlockAll() {
     SideTables().unlockAll();
 }
 
+// [port] CHANGED: The .forceResetAll function is not implemented yet.
+#ifndef OBJC_PORT
 void SideTableForceResetAll() {
     SideTables().forceResetAll();
 }
+#endif
 
 void SideTableDefineLockOrder() {
     SideTables().defineLockOrder();

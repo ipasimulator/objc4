@@ -81,6 +81,7 @@ class nocopy_t {
 #define __unused	__attribute__((unused))
 
 // [port] TODO: Where is this officialy defined?
+// [port] TODO: Was this added or what? If so, it should be documented with CHANGE comment!
 #define __BEGIN_DECLS extern "C" {
 #define __END_DECLS }
 
@@ -120,7 +121,7 @@ class nocopy_t {
 #   include <mach-o/getsect.h>
 #   include <mach-o/dyld_priv.h>
 #   include <malloc/malloc.h>
-#   include <os/lock_private.h>
+#   include <os/lock_private.h> // [port] This includes <os/lock.h> in turn.
 #   include <libkern/OSAtomic.h>
 #   include <libkern/OSCacheControl.h>
 #   include <System/pthread_machdep.h>
@@ -823,12 +824,32 @@ extern const fork_unsafe_lock_t fork_unsafe_lock;
 
 #include "objc-lockdebug.h"
 
-// [port] CHANGED: Not supporting os_unfair_lock-based locks right now.
-// [port] Anyway, see "os/lock.h" where it's defined.
-#ifndef OBJC_PORT
-
 template <bool Debug>
 class mutex_tt : nocopy_t {
+// [port] CHANGED: Used an older version that uses pthread's mutex instead
+// [port] of macOS-specific os_unfair_lock. See source code here:
+// [port] https://opensource.apple.com/source/objc4/objc4-680/runtime/objc-os.h.auto.html.
+#ifdef OBJC_PORT
+    pthread_mutex_t mLock;
+  public:
+    mutex_tt() : mLock(PTHREAD_MUTEX_INITIALIZER) { }
+
+    void lock()
+    {
+        lockdebug_mutex_lock(this);
+
+        int err = pthread_mutex_lock(&mLock);
+        if (err) _objc_fatal("pthread_mutex_lock failed (%d)", err);
+    }
+
+    void unlock()
+    {
+        lockdebug_mutex_unlock(this);
+
+        int err = pthread_mutex_unlock(&mLock);
+        if (err) _objc_fatal("pthread_mutex_unlock failed (%d)", err);
+    }
+#else // [port] !OBJC_PORT
     os_unfair_lock mLock;
  public:
     mutex_tt() : mLock(OS_UNFAIR_LOCK_INIT) {
@@ -856,6 +877,7 @@ class mutex_tt : nocopy_t {
         bzero(&mLock, sizeof(mLock));
         mLock = os_unfair_lock OS_UNFAIR_LOCK_INIT;
     }
+#endif // [port] !OBJC_PORT
 
     void assertLocked() {
         lockdebug_mutex_assert_locked(this);
@@ -894,8 +916,6 @@ class mutex_tt : nocopy_t {
 };
 
 using mutex_locker_t = mutex_tt<LOCKDEBUG>::locker;
-
-#endif // [port] OBJC_PORT
 
 template <bool Debug>
 class recursive_mutex_tt : nocopy_t {
