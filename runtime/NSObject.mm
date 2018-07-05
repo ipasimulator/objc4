@@ -47,8 +47,8 @@
 #ifndef OBJC_PORT
 #include <sys/mman.h>
 #include <libkern/OSAtomic.h>
-#include <Block.h>
 #endif
+#include <Block.h> // [port] For _Block_copy.
 #include <map>
 // [port] TODO: Is this needed?
 #ifndef OBJC_PORT
