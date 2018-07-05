@@ -36,15 +36,24 @@
 #endif // [port] !OBJC_PORT
 #include <stdint.h>
 #include <stdbool.h>
+// [port] TODO: Are those needed?
+#ifndef OBJC_PORT
 #include <mach/mach.h>
 #include <mach-o/dyld.h>
 #include <mach-o/nlist.h>
+#endif
 #include <sys/types.h>
+// [port] TODO: Are those needed?
+#ifndef OBJC_PORT
 #include <sys/mman.h>
 #include <libkern/OSAtomic.h>
 #include <Block.h>
+#endif
 #include <map>
+// [port] TODO: Is this needed?
+#ifndef OBJC_PORT
 #include <execinfo.h>
+#endif
 
 @interface NSInvocation
 - (SEL)selector;
