@@ -141,6 +141,7 @@ void vsyslog(int, const char *, va_list) UNAVAILABLE_ATTRIBUTE;
 
 // [port] CHANGED: If these are not redefined like follows, compiler complains.
 // [port] TODO: Why?
+// [port] See https://clang.llvm.org/docs/LanguageExtensions.html for more info about these.
 #ifdef OBJC_PORT
 #	define __builtin_addcl __builtin_addc
 #	define __builtin_subcl __builtin_subc
