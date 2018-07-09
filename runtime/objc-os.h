@@ -399,6 +399,20 @@ extern void _objc_fatal_with_reason(uint64_t reason, uint64_t flags,
     } while (0)
 
 
+// [port] CHANGED: [no-direct-keys].
+#if defined(OBJC_PORT)
+struct port_pthread_direct_keys {
+    static pthread_key_t return_disposition_key;
+
+    // [port] TODO: Call this!
+    static void init() {
+        pthread_key_create(&return_disposition_key, nullptr);
+    }
+};
+#define SUPPORT_DIRECT_THREAD_KEYS 1
+#define RETURN_DISPOSITION_KEY port_pthread_direct_keys::return_disposition_key
+// [port] defined(OBJC_PORT)
+#else
 // Thread keys reserved by libc for our use.
 #if defined(__PTK_FRAMEWORK_OBJC_KEY0)
 #   define SUPPORT_DIRECT_THREAD_KEYS 1
@@ -414,6 +428,8 @@ extern void _objc_fatal_with_reason(uint64_t reason, uint64_t flags,
 # endif
 #else
 #   define SUPPORT_DIRECT_THREAD_KEYS 0
+#endif
+// [port] !defined(OBJC_PORT)
 #endif
 
 // [port] CHANGED: We want these stubs in our port!
@@ -736,6 +752,11 @@ static inline void tls_set(tls_key_t k, void *value) {
 
 #if DEBUG
 static bool is_valid_direct_key(tls_key_t k) {
+// [port] CHANGED: [no-direct-keys], operator== wouldn't probably work anyway.
+#if defined(OBJC_PORT)
+    return 1;
+// [port] defined(OBJC_PORT)
+#else
     return (   k == SYNC_DATA_DIRECT_KEY
             || k == SYNC_COUNT_DIRECT_KEY
             || k == AUTORELEASE_POOL_KEY
@@ -746,6 +767,8 @@ static bool is_valid_direct_key(tls_key_t k) {
             || k == QOS_KEY
 #   endif
                );
+// [port] !defined(OBJC_PORT)
+#endif
 }
 #endif
 
