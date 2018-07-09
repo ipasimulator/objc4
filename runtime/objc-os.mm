@@ -771,7 +771,13 @@ static bool ForkIsMultithreaded;
 void _objc_atfork_prepare()
 {
     // Save threaded-ness for the child's use.
+    // [port] CHANGED: Let's say we have multiple threads, just in case...
+    // [port] TODO: Actually implement pthread_is_threaded_np via Win32 APIs.
+#if defined(OBJC_PORT)
+    ForkIsMultithreaded = true;
+#else
     ForkIsMultithreaded = pthread_is_threaded_np();
+#endif
 
     lockdebug_assert_no_locks_locked();
     lockdebug_setInForkPrepare(true);
