@@ -580,6 +580,10 @@ void fixupCopiedIvars(id newObject, id oldObject)
     }
 }
 
+// [port] CHANGED: Plain typeof doesn't work for some reason.
+#if defined(OBJC_PORT)
+#define typeof __typeof__
+#endif
 
 /***********************************************************************
 * _class_resolveClassMethod
