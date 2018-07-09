@@ -246,7 +246,10 @@ void _destroyAltHandlerList(struct alt_handler_list *list)
 #include <objc/objc-exception.h>
 #include <objc/NSObject.h>
 #endif
+// [port] CHANGED: Not needed.
+#if !defined(OBJC_PORT)
 #include <execinfo.h>
+#endif
 
 // unwind library types and functions
 // Mostly adapted from Itanium C++ ABI: Exception Handling
@@ -544,9 +547,12 @@ void objc_exception_throw(id obj)
         if (!PrintExceptions)
             _objc_inform("EXCEPTIONS: throwing %p (object %p, a %s)", 
                          exc, (void*)obj, object_getClassName(obj));
+        // [port] CHANGED: backtrace is undefined.
+#if !defined(OBJC_PORT)
         void* callstack[500];
         int frameCount = backtrace(callstack, 500);
         backtrace_symbols_fd(callstack, frameCount, fileno(stderr));
+#endif
     }
     
     OBJC_RUNTIME_OBJC_EXCEPTION_THROW(obj);  // dtrace probe to log throw activity
