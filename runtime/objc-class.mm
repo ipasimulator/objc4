@@ -891,9 +891,12 @@ void instrumentObjcMessageSends(BOOL flag)
     if (enable)
         _objc_flush_caches(Nil);
 
+    // [port] CHANGED: We don't support logging.
+#if !defined(OBJC_PORT)
     // Sync our log file
     if (objcMsgLogFD != -1)
         fsync (objcMsgLogFD);
+#endif
 
     objcMsgLogEnabled = enable;
 }
