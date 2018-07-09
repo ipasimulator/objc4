@@ -222,12 +222,18 @@ static TrampolineBlockPagePair *_allocateTrampolinesAndData(ArgumentMode aMode)
     
     assert(headPagePair == nil  ||  headPagePair->nextAvailablePage == nil);
     
+    // [port] CHANGED: Porting vm_allocate using malloc.
+    // [port] TODO: [use-unicorn-alloc].
+#if defined(OBJC_PORT)
+    dataAddress = (uintptr_t)malloc(PAGE_MAX_SIZE * 2);
+#else
     kern_return_t result;
     result = vm_allocate(mach_task_self(), &dataAddress, PAGE_MAX_SIZE * 2,
                          VM_FLAGS_ANYWHERE | VM_MAKE_TAG(VM_MEMORY_FOUNDATION));
     if (result != KERN_SUCCESS) {
         _objc_fatal("vm_allocate trampolines failed (%d)", result);
     }
+#endif
 
     vm_address_t codeAddress = dataAddress + PAGE_MAX_SIZE;
         
@@ -246,6 +252,11 @@ static TrampolineBlockPagePair *_allocateTrampolinesAndData(ArgumentMode aMode)
         break;
     }
     
+    // [port] CHANGED: Porting vm_remap using realloc.
+    // [port] TODO: [use-unicorn-alloc].
+#if defined(OBJC_PORT)
+    codeAddress = (uintptr_t)realloc((void *)codeAddress, PAGE_MAX_SIZE);
+#else
     vm_prot_t currentProtection, maxProtection;
     result = vm_remap(mach_task_self(), &codeAddress, PAGE_MAX_SIZE, 
                       0, VM_FLAGS_FIXED | VM_FLAGS_OVERWRITE,
@@ -255,6 +266,7 @@ static TrampolineBlockPagePair *_allocateTrampolinesAndData(ArgumentMode aMode)
         // vm_deallocate(mach_task_self(), dataAddress, PAGE_MAX_SIZE * 2);
         _objc_fatal("vm_remap trampolines failed (%d)", result);
     }
+#endif
     
     TrampolineBlockPagePair *pagePair = (TrampolineBlockPagePair *) dataAddress;
     pagePair->nextAvailable = pagePair->startIndex();
