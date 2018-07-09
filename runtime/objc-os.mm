@@ -878,6 +878,7 @@ void _objc_atfork_child()
 * Called by libSystem BEFORE library initialization time
 **********************************************************************/
 
+// [port] TODO: Call this.
 void _objc_init(void)
 {
     static bool initialized = false;
@@ -891,7 +892,11 @@ void _objc_init(void)
     lock_init();
     exception_init();
 
+    // [port] TODO: Call our version, see this for documentation:
+    // [port] https://opensource.apple.com/source/dyld/dyld-519.2.2/include/mach-o/dyld_priv.h.auto.html.
+#if !defined(OBJC_PORT)
     _dyld_objc_notify_register(&map_images, load_images, unmap_image);
+#endif
 }
 
 
