@@ -94,6 +94,7 @@ class nocopy_t {
 #include <sys/reason.h> // [port] for OS_REASON_* definitions
 #include <mach-o/getsect.h> // [port] for getsectiondata
 #include <dlfcn.h> // [port] for dladdr
+#include <mach-o/ldsyms.h> // [port] for _mh_dylib_header
 #else
 #   include <stdio.h>
 #   include <stdlib.h>
