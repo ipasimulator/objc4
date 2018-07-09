@@ -739,7 +739,13 @@ class AutoreleasePoolPage
     // SIZE-sizeof(*this) bytes of contents follow
 
     static void * operator new(size_t size) {
+        // [port] CHANGED: Replacing malloc_zone_memalign(malloc_default_zone(), ...)
+        // [port] -> posix_memalign(...) -> _aligned_malloc(...).
+#if defined(OBJC_PORT)
+        return _aligned_malloc(SIZE, SIZE);
+#else
         return malloc_zone_memalign(malloc_default_zone(), SIZE, SIZE);
+#endif
     }
     static void operator delete(void * p) {
         return free(p);
