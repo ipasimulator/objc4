@@ -382,6 +382,17 @@ private:
 
 struct header_info_rw* getPreoptimizedHeaderRW(const struct header_info *const hdr);
 
+// [port] CHANGED: Porting dyld_image_path_containing_address using dladdr.
+// [port] Copied (and modified) from sym function in objc-lockdebug.mm.
+#if defined(OBJC_PORT)
+static const char* dyld_image_path_containing_address(const void* addr) {
+    Dl_info info;
+    int ok = dladdr(addr, &info);
+    if (ok && info.dli_fname && info.dli_fname[0]) return info.dli_fname;
+    else return "??";
+}
+#endif
+
 typedef struct header_info {
 private:
     // Note, this is no longer a pointer, but instead an offset to a pointer
@@ -446,12 +457,9 @@ public:
         return mhdr()->filetype == MH_BUNDLE;
     }
 
-// [port] CHANGED: We don't support "dyld_image_path_containing_address" right now.
-#ifndef OBJC_PORT
     const char *fname() const {
         return dyld_image_path_containing_address(mhdr());
     }
-#endif // [port] !OBJC_PORT
 
     bool isPreoptimized() const;
 

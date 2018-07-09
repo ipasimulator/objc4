@@ -1046,8 +1046,7 @@ _class_createInstancesFromZone(Class cls, size_t extraBytes, void *zone,
 void 
 inform_duplicate(const char *name, Class oldCls, Class newCls)
 {
-    // [port] CHANGED: "header_info::fname" is not implemented.
-#if TARGET_OS_WIN32 || defined(OBJC_PORT)
+#if TARGET_OS_WIN32
     (DebugDuplicateClasses ? _objc_fatal : _objc_inform)
         ("Class %s is implemented in two different images.", name);
 #else
