@@ -316,8 +316,14 @@ header_info_rw *getPreoptimizedHeaderRW(const struct header_info *const hdr)
     objc_headeropt_ro_t *hinfoRO = opt ? opt->headeropt_ro() : nil;
     objc_headeropt_rw_t *hinfoRW = opt ? opt->headeropt_rw() : nil;
     if (!hinfoRO || !hinfoRW) {
+        // [port] CHANGED: header_info::fname is not implemented.
+#if defined(OBJC_PORT)
+        _objc_fatal("preoptimized header_info missing (%p %p %p)",
+                    hdr, hinfoRO, hinfoRW);
+#else
         _objc_fatal("preoptimized header_info missing for %s (%p %p %p)",
                     hdr->fname(), hdr, hinfoRO, hinfoRW);
+#endif
     }
     int32_t index = (int32_t)(hdr - hinfoRO->headers);
     assert(hinfoRW->entsize == sizeof(header_info_rw));
