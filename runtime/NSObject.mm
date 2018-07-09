@@ -1278,7 +1278,10 @@ public:
                          "pending releases for thread %p:", 
                          mark, pthread_self());
 #endif
-            
+
+            // [port] CHANGED: "backtrace" is undefined.
+            // [port] TODO: Port this using https://stackoverflow.com/a/26398082.
+#if !defined(OBJC_PORT)
             void *stack[128];
             int count = backtrace(stack, sizeof(stack)/sizeof(stack[0]));
             char **sym = backtrace_symbols(stack, count);
@@ -1286,6 +1289,7 @@ public:
                 _objc_inform("POOL HIGHWATER:     %s", sym[i]);
             }
             free(sym);
+#endif
         }
     }
 
