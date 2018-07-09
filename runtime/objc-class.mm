@@ -984,6 +984,20 @@ _objc_constructOrFree(id bytes, Class cls)
     return obj;
 }
 
+// [port] CHANGED: Porting malloc_zone_batch_malloc.
+#if defined(OBJC_PORT)
+// [port] From https://github.com/emeryberger/Malloc-Implementations/blob/17e52035d91f9f2e52e3303c8872ee29f5b5a7c5/Heap-Layers/wrappers/macwrapper.cpp#L277.
+static unsigned malloc_zone_batch_malloc(malloc_zone_t *, size_t sz, void ** results, unsigned num_requested)
+{
+    for (unsigned i = 0; i < num_requested; i++) {
+        results[i] = malloc(sz);
+        if (results[i] == NULL) {
+            return i;
+        }
+    }
+    return num_requested;
+}
+#endif
 
 /***********************************************************************
 * _class_createInstancesFromZone
