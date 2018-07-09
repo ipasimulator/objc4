@@ -1350,8 +1350,15 @@ ustrdupMaybeNil(const uint8_t *str)
 #   define sdkVersion() dyld_get_program_sdk_version()
 
 #elif TARGET_OS_IOS
-#   define DYLD_OS_VERSION(x, i, t, w, b) DYLD_IOS_VERSION_##i
-#   define sdkVersion() dyld_get_program_sdk_version()
+    // [port] CHANGED: dyld_get_program_sdk_version doesn't exist.
+#   if defined(OBJC_PORT)
+        // [port] TODO: Return something meaningful.
+#       define DYLD_OS_VERSION(x, i, t, w, b) 0
+#       define sdkVersion() 0
+#   else
+#       define DYLD_OS_VERSION(x, i, t, w, b) DYLD_IOS_VERSION_##i
+#       define sdkVersion() dyld_get_program_sdk_version()
+#   endif
 
 #elif TARGET_OS_TV
     // dyld does not currently have distinct constants for tvOS
