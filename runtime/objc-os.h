@@ -89,6 +89,7 @@ class nocopy_t {
 #include <System/pthread_machdep.h> // [port] TODO: Not needed right now.
 #include <chrono> // [port] for high_resolution_clock
 #include <sys/reason.h> // [port] for OS_REASON_* definitions
+#include <mach-o/getsect.h> // [port] for getsectiondata
 #else
 #   include <stdio.h>
 #   include <stdlib.h>
