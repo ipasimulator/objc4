@@ -134,6 +134,8 @@ static void _objc_crashlog(const char *message)
 // Copied from CFUtilities.c
 static bool also_do_stderr(void) 
 {
+    // [port] CHANGED: fstat is undefined.
+#if !defined(OBJC_PORT)
     struct stat st;
     int ret = fstat(STDERR_FILENO, &st);
     if (ret < 0) return false;
@@ -141,6 +143,7 @@ static bool also_do_stderr(void)
     if (m == S_IFREG  ||  m == S_IFSOCK  ||  m == S_IFIFO  ||  m == S_IFCHR) {
         return true;
     }
+#endif
     return false;
 }
 
