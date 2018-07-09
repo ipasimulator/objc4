@@ -130,12 +130,12 @@ static void _objc_crashlog(const char *message)
     }
 }
 
+// [port] CHANGED: fstat is undefined.
+#if !defined(OBJC_PORT)
 // Returns true if logs should be sent to stderr as well as syslog.
 // Copied from CFUtilities.c
 static bool also_do_stderr(void) 
 {
-    // [port] CHANGED: fstat is undefined.
-#if !defined(OBJC_PORT)
     struct stat st;
     int ret = fstat(STDERR_FILENO, &st);
     if (ret < 0) return false;
@@ -143,18 +143,21 @@ static bool also_do_stderr(void)
     if (m == S_IFREG  ||  m == S_IFSOCK  ||  m == S_IFIFO  ||  m == S_IFCHR) {
         return true;
     }
-#endif
     return false;
 }
+#endif
 
 // Print "message" to the console.
 static void _objc_syslog(const char *message)
 {
     _simple_asl_log(ASL_LEVEL_ERR, nil, message);
 
+    // [port] CHANGED: also_do_stderr is not implemented.
+#if !defined(OBJC_PORT)
     if (also_do_stderr()) {
         write(STDERR_FILENO, message, strlen(message));
     }
+#endif
 }
 
 /*
