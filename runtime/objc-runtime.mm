@@ -423,7 +423,10 @@ void _objc_pthread_destroyspecific(void *arg)
 
 void tls_init(void)
 {
-#if SUPPORT_DIRECT_THREAD_KEYS
+    // [port] CHANGED: [no-direct-keys] - we don't support direct thread keys,
+    // [port] but we must act like we do elsewhere, that's why
+    // [port] SUPPORT_DIRECT_THREAD_KEYS is still defined to be 1.
+#if SUPPORT_DIRECT_THREAD_KEYS && !defined(OBJC_PORT)
     _objc_pthread_key = TLS_DIRECT_KEY;
     pthread_key_init_np(TLS_DIRECT_KEY, &_objc_pthread_destroyspecific);
 #else
