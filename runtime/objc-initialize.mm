@@ -279,10 +279,13 @@ static void _finishInitializing(Class cls, Class supercls)
     classInitLock.assertLocked();
     assert(!supercls  ||  supercls->isInitialized());
 
+// [port] CHANGED: [format-error-pthread-self].
+#if !defined(OBJC_PORT)
     if (PrintInitializing) {
         _objc_inform("INITIALIZE: thread %p: %s is fully +initialized",
                      pthread_self(), cls->nameForLogging());
     }
+#endif
 
     // mark this class as fully +initialized
     cls->setInitialized();
@@ -322,12 +325,15 @@ static void _finishInitializingAfter(Class cls, Class supercls)
 
     classInitLock.assertLocked();
 
+// [port] CHANGED: [format-error-pthread-self].
+#if !defined(OBJC_PORT)
     if (PrintInitializing) {
         _objc_inform("INITIALIZE: thread %p: class %s will be marked as fully "
                      "+initialized after superclass +[%s initialize] completes",
                      pthread_self(), cls->nameForLogging(),
                      supercls->nameForLogging());
     }
+#endif
 
     if (!pendingInitializeMap) {
         pendingInitializeMap = 
@@ -354,10 +360,13 @@ void callInitialize(Class cls)
 
 void waitForInitializeToComplete(Class cls)
 {
+// [port] CHANGED: [format-error-pthread-self].
+#if !defined(OBJC_PORT)
     if (PrintInitializing) {
         _objc_inform("INITIALIZE: thread %p: blocking until +[%s initialize] "
                      "completes", pthread_self(), cls->nameForLogging());
     }
+#endif
 
     monitor_locker_t lock(classInitLock);
     while (!cls->isInitialized()) {
@@ -448,20 +457,26 @@ BREAKPOINT_FUNCTION(
 void performForkChildInitialize(Class cls, Class supercls)
 {
     if (classHasTrivialInitialize(cls)) {
+// [port] CHANGED: [format-error-pthread-self].
+#if !defined(OBJC_PORT)
         if (PrintInitializing) {
             _objc_inform("INITIALIZE: thread %p: skipping trivial +[%s "
                          "initialize] in fork() child process",
                          pthread_self(), cls->nameForLogging());
         }
+#endif
         lockAndFinishInitializing(cls, supercls);
     }
     else {
+// [port] CHANGED: [format-error-pthread-self].
+#if !defined(OBJC_PORT)
         if (PrintInitializing) {
             _objc_inform("INITIALIZE: thread %p: refusing to call +[%s "
                          "initialize] in fork() child process because "
                          "it may have been in progress when fork() was called",
                          pthread_self(), cls->nameForLogging());
         }
+#endif
         _objc_inform_now_and_on_crash
             ("+[%s initialize] may have been in progress in another thread "
              "when fork() was called.",
@@ -519,10 +534,13 @@ void _class_initialize(Class cls)
         // Send the +initialize message.
         // Note that +initialize is sent to the superclass (again) if 
         // this class doesn't implement +initialize. 2157218
+// [port] CHANGED: [format-error-pthread-self].
+#if !defined(OBJC_PORT)
         if (PrintInitializing) {
             _objc_inform("INITIALIZE: thread %p: calling +[%s initialize]",
                          pthread_self(), cls->nameForLogging());
         }
+#endif
 
         // Exceptions: A +initialize call that throws an exception 
         // is deemed to be a complete and successful +initialize.
@@ -536,18 +554,24 @@ void _class_initialize(Class cls)
         {
             callInitialize(cls);
 
+// [port] CHANGED: [format-error-pthread-self].
+#if !defined(OBJC_PORT)
             if (PrintInitializing) {
                 _objc_inform("INITIALIZE: thread %p: finished +[%s initialize]",
                              pthread_self(), cls->nameForLogging());
             }
+#endif
         }
 #if __OBJC2__
         @catch (...) {
+// [port] CHANGED: [format-error-pthread-self].
+#if !defined(OBJC_PORT)
             if (PrintInitializing) {
                 _objc_inform("INITIALIZE: thread %p: +[%s initialize] "
                              "threw an exception",
                              pthread_self(), cls->nameForLogging());
             }
+#endif
             @throw;
         }
         @finally
