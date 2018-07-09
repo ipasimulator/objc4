@@ -24,7 +24,10 @@
 #include <string.h>
 #include <stddef.h>
 
+// [port] TODO: Is this needed?
+#if !defined(OBJC_PORT)
 #include <libkern/OSAtomic.h>
+#endif
 
 #include "objc-private.h"
 #include "runtime.h"
