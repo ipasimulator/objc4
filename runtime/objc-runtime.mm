@@ -250,6 +250,10 @@ void environ_init(void)
     bool PrintOptions = false;
     bool maybeMallocDebugging = false;
 
+    // [port] CHANGED: _NSGetEnviron is undefined. This should work as if
+    // [port] no relevant environment variables were set, which is fine.
+    // [port] TODO: Actually implement this.
+#if !defined(OBJC_PORT)
     // Scan environ[] directly instead of calling getenv() a lot.
     // This optimizes the case where none are set.
     for (char **p = *_NSGetEnviron(); *p != nil; p++) {
@@ -284,6 +288,7 @@ void environ_init(void)
             }
         }            
     }
+#endif
 
     // Special case: enable some autorelease pool debugging 
     // when some malloc debugging is enabled 
