@@ -4536,13 +4536,19 @@ Method class_getInstanceMethod(Class cls, SEL sel)
     // This implementation is a bit weird because it's the only place that 
     // wants a Method instead of an IMP.
 
+    // [port] CHANGED: Not our job.
+#if !defined(OBJC_PORT)
 #warning fixme build and search caches
+#endif
         
     // Search method lists, try method resolver, etc.
     lookUpImpOrNil(cls, sel, nil, 
                    NO/*initialize*/, NO/*cache*/, YES/*resolver*/);
 
+    // [port] CHANGED: Not our job.
+#if !defined(OBJC_PORT)
 #warning fixme build and search caches
+#endif
 
     return _class_getMethod(cls, sel);
 }
