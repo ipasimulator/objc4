@@ -226,15 +226,20 @@ void _objc_fatalv(uint64_t reason, uint64_t flags, const char *fmt, va_list ap)
     asprintf(&buf2, "objc[%d]: %s\n", getpid(), buf1);
     _objc_syslog(buf2);
 
+    // [port] CHANGED: abort_with_reason is undefined.
+#if !defined(OBJC_PORT)
     if (DebugDontCrash) {
+#endif
         char *buf3;
         asprintf(&buf3, "objc[%d]: HALTED\n", getpid());
         _objc_syslog(buf3);
         _Exit(1);
+#if !defined(OBJC_PORT)
     }
     else {
         abort_with_reason(OS_REASON_OBJC, reason, buf1, flags);
     }
+#endif
 }
 
 void _objc_fatal_with_reason(uint64_t reason, uint64_t flags, 
