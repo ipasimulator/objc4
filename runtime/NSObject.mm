@@ -1049,11 +1049,14 @@ class AutoreleasePoolPage
         else if (obj != POOL_BOUNDARY  &&  DebugMissingPools) {
             // We are pushing an object with no pool in place, 
             // and no-pool debugging was requested by environment.
+            // [port] CHANGED: There is a format error (with phtread_self()).
+#if !defined(OBJC_PORT)
             _objc_inform("MISSING POOLS: (%p) Object %p of class %s "
                          "autoreleased with no pool in place - "
                          "just leaking - break on "
                          "objc_autoreleaseNoPool() to debug", 
                          pthread_self(), (void*)obj, object_getClassName(obj));
+#endif
             objc_autoreleaseNoPool(obj);
             return nil;
         }
