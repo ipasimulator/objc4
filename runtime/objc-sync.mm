@@ -118,7 +118,8 @@ static SyncData* id2data(id object, enum usage why)
     SyncData **listp = &LIST_FOR_OBJ(object);
     SyncData* result = NULL;
 
-#if SUPPORT_DIRECT_THREAD_KEYS
+    // [port] CHANGED: [no-direct-keys].
+#if SUPPORT_DIRECT_THREAD_KEYS && !defined(OBJC_PORT)
     // Check per-thread single-entry fast cache for matching object
     bool fastCacheOccupied = NO;
     SyncData *data = (SyncData *)tls_get_direct(SYNC_DATA_DIRECT_KEY);
@@ -258,7 +259,8 @@ static SyncData* id2data(id object, enum usage why)
         if (why != ACQUIRE) _objc_fatal("id2data is buggy");
         if (result->object != object) _objc_fatal("id2data is buggy");
 
-#if SUPPORT_DIRECT_THREAD_KEYS
+        // [port] CHANGED: [no-direct-keys].
+#if SUPPORT_DIRECT_THREAD_KEYS && !defined(OBJC_PORT)
         if (!fastCacheOccupied) {
             // Save in fast thread cache
             tls_set_direct(SYNC_DATA_DIRECT_KEY, result);
