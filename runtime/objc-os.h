@@ -80,6 +80,9 @@ class nocopy_t {
  */
 #define __unused	__attribute__((unused))
 
+// [port] CHANGED: Plain typeof doesn't work for some reason.
+#define typeof __typeof__
+
 // [port] TODO: Where is this officialy defined?
 // [port] TODO: Was this added or what? If so, it should be documented with CHANGE comment!
 #define __BEGIN_DECLS extern "C" {
