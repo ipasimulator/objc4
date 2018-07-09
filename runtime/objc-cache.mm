@@ -141,6 +141,8 @@ static void recordDeadCache(mask_t capacity)
 #define stringize(x) #x
 #define stringize2(x) stringize(x)
 
+// [port] CHANGED: Not supporting this.
+#if !defined(OBJC_PORT)
 // "cache" is cache->buckets; "vtable" is cache->mask/occupied
 // hack to avoid conflicts with compiler's internal declaration
 asm("\n .section __TEXT,__const"
@@ -150,6 +152,7 @@ asm("\n .section __TEXT,__const"
     "\n .align 3"
     "\n __objc_empty_cache: .space " stringize2(EMPTY_BYTES)
     );
+#endif
 
 
 #if __arm__  ||  __x86_64__  ||  __i386__
@@ -614,7 +617,8 @@ void cache_delete(Class cls)
 * cache collection.
 **********************************************************************/
 
-#if !TARGET_OS_WIN32
+// [port] CHANGED: Not supporting these.
+#if !TARGET_OS_WIN32 && !defined(OBJC_PORT)
 
 // A sentinel (magic value) to report bad thread_get_state status.
 // Must not be a valid PC.
@@ -670,7 +674,8 @@ OBJC_EXPORT uintptr_t objc_exitPoints[];
 
 static int _collecting_in_critical(void)
 {
-#if TARGET_OS_WIN32
+    // [port] CHANGED: Yes, we want this stub, too!
+#if TARGET_OS_WIN32 || defined(OBJC_PORT)
     return TRUE;
 #else
     thread_act_port_array_t threads;
