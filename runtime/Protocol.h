@@ -36,7 +36,12 @@
 
 #elif __OBJC2__
 
+// [port] CHANGED: [angle-brackets].
+#if defined(OBJC_PORT)
+#include "NSObject.h"
+#else
 #include <objc/NSObject.h>
+#endif
 
 // All methods of class Protocol are unavailable. 
 // Use the functions in objc/runtime.h instead.

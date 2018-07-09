@@ -32,7 +32,10 @@
 
 #include <stdlib.h>
 #include <string.h>
+// [port] CHANGED: Not needed.
+#if !defined(OBJC_PORT)
 #include <mach-o/dyld.h>
+#endif
 #include <mach-o/ldsyms.h>
 
 #include "Protocol.h"
