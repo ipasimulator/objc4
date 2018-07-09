@@ -844,6 +844,10 @@ bool logMessageSend(bool isClassMethod,
                     const char *implementingClass,
                     SEL selector)
 {
+// [port] CHANGED: The original code uses undefined functions.
+#if defined(OBJC_PORT)
+    return true;
+#else
     char	buf[ 1024 ];
 
     // Create/open the log file
@@ -872,6 +876,7 @@ bool logMessageSend(bool isClassMethod,
 
     // Tell caller to not cache the method
     return false;
+#endif
 }
 
 void instrumentObjcMessageSends(BOOL flag)
