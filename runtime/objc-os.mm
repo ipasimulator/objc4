@@ -941,7 +941,8 @@ const header_info *_headerForClass(Class cls)
     return _headerForAddress(cls);
 }
 
-
+// [port] CHANGED: Not supporting this (too Unix-y).
+#if !defined(OBJC_PORT)
 /**********************************************************************
 * secure_open
 * Securely open a file from a world-writable directory (like /tmp)
@@ -1024,7 +1025,8 @@ int secure_open(const char *filename, int flags, uid_t euid)
         }
     }
 }
-
+// [port] !defined(OBJC_PORT)
+#endif
 
 #if TARGET_OS_IPHONE
 
