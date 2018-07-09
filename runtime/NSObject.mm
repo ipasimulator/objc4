@@ -713,7 +713,12 @@ class AutoreleasePoolPage
 #   define EMPTY_POOL_PLACEHOLDER ((id*)1)
 
 #   define POOL_BOUNDARY nil
+    // [port] CHANGED: [no-direct-keys].
+#if defined(OBJC_PORT)
+    static pthread_key_t key;
+#else
     static pthread_key_t const key = AUTORELEASE_POOL_KEY;
+#endif
     static uint8_t const SCRIBBLE = 0xA3;  // 0xA3A3A3A3 after releasing
     static size_t const SIZE = 
 #if PROTECT_AUTORELEASEPOOL
@@ -1187,9 +1192,15 @@ public:
 
     static void init()
     {
+        // [port] CHANGED: [no-direct-keys].
+#if defined(OBJC_PORT)
+        pthread_key_create(&AutoreleasePoolPage::key,
+                           AutoreleasePoolPage::tls_dealloc);
+#else
         int r __unused = pthread_key_init_np(AutoreleasePoolPage::key, 
                                              AutoreleasePoolPage::tls_dealloc);
         assert(r == 0);
+#endif
     }
 
     void print() 
