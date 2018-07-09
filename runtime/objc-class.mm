@@ -158,7 +158,12 @@
 
 #include "objc-private.h"
 #include "objc-abi.h"
+// [port] CHANGED: [angle-brackets].
+#if defined(OBJC_PORT)
+#include "message.h"
+#else
 #include <objc/message.h>
+#endif
 
 
 /* overriding the default object allocation and error handling routines */

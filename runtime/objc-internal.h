@@ -37,7 +37,7 @@
  * objc-internal.h: Private SPI for use by other system frameworks.
  */
 
- // [port] CHANGED: We wanna use "..." includes instead of <objc/...> ones.
+ // [port] CHANGED: [angle-brackets].
 #ifdef OBJC_PORT
 #include "objc.h"
 #include "runtime.h"

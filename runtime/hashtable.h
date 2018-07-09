@@ -1,4 +1,4 @@
-// [port] CHANGED: We wanna use "..." includes instead of <objc/...> ones.
+// [port] CHANGED: [angle-brackets].
 #ifdef OBJC_PORT
 #include "hashtable2.h"
 #else

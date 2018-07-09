@@ -42,7 +42,7 @@
 #include <malloc/malloc.h>
 #endif // [port] !OBJC_PORT
 #include <TargetConditionals.h>
-// [port] CHANGED: We wanna use "..." includes instead of <objc/...> ones.
+// [port] CHANGED: [angle-brackets].
 #ifdef OBJC_PORT
 #include "objc.h"
 #include "runtime.h"

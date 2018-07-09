@@ -24,7 +24,7 @@
 #ifndef _OBJC_MESSAGE_H
 #define _OBJC_MESSAGE_H
 
-// [port] CHANGED: We wanna use "..." includes instead of <objc/...> ones.
+// [port] CHANGED: [angle-brackets].
 #ifdef OBJC_PORT
 #include "objc.h"
 #include "runtime.h"
