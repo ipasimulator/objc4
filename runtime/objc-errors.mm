@@ -210,6 +210,12 @@ void __objc_error(id rcv, const char *fmt, ...)
     va_end(vp);
 }
 
+// [port] CHANGED: Porting getpid.
+#if defined(OBJC_PORT)
+#include <process.h> // [port] for _getpid
+#define getpid _getpid
+#endif
+
 static __attribute__((noreturn))
 void _objc_fatalv(uint64_t reason, uint64_t flags, const char *fmt, va_list ap)
 {
