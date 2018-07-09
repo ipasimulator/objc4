@@ -88,6 +88,7 @@ class nocopy_t {
 #include <pthread.h>
 #include <System/pthread_machdep.h> // [port] TODO: Not needed right now.
 #include <chrono> // [port] for high_resolution_clock
+#include <sys/reason.h> // [port] for OS_REASON_* definitions
 #else
 #   include <stdio.h>
 #   include <stdlib.h>
