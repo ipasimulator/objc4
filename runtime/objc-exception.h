@@ -24,7 +24,12 @@
 #ifndef __OBJC_EXCEPTION_H_
 #define __OBJC_EXCEPTION_H_
 
+// [port] CHANGED: [angle-brackets].
+#if defined(OBJC_PORT)
+#include "objc.h"
+#else
 #include <objc/objc.h>
+#endif
 #include <stdint.h>
 
 #if !__OBJC2__

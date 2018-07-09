@@ -238,8 +238,14 @@ void _destroyAltHandlerList(struct alt_handler_list *list)
 **********************************************************************/
 
 #include "objc-private.h"
+// [port] CHANGED: [angle-brackets].
+#if defined(OBJC_PORT)
+#include "objc-exception.h"
+#include "NSObject.h"
+#else
 #include <objc/objc-exception.h>
 #include <objc/NSObject.h>
+#endif
 #include <execinfo.h>
 
 // unwind library types and functions
