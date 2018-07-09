@@ -33,8 +33,16 @@
 #include "objc-file.h"
 #include "objc-cache.h"
 #include <Block.h>
+// [port] CHANGED: [angle-brackets].
+#if defined(OBJC_PORT)
+#include "message.h"
+#else
 #include <objc/message.h>
+#endif
+// [port] CHANGED: Not needed.
+#if !defined(OBJC_PORT)
 #include <mach/shared_region.h>
+#endif
 
 #define newprotocol(p) ((protocol_t *)p)
 
