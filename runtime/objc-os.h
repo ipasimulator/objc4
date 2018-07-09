@@ -886,6 +886,9 @@ class mutex_tt : nocopy_t {
         lockdebug_remember_mutex(this);
     }
 
+    // [port] CHANGED: Since this seems to be equivalent to the constructor with zero arguments,
+    // [port] we use that instead of this one everywhere. If this equivalency is broken in the
+    // [port] future, be careful to use the proper constructor!
     mutex_tt(const fork_unsafe_lock_t unsafe) : mLock(OS_UNFAIR_LOCK_INIT) { }
 
     void lock() {

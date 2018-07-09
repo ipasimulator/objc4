@@ -60,7 +60,12 @@ struct SyncList {
     SyncData *data;
     spinlock_t lock;
 
+    // [port] CHANGED: See mutex_tt constructors.
+#if defined(OBJC_PORT)
+    SyncList() : data(nil), lock() { }
+#else
     SyncList() : data(nil), lock(fork_unsafe_lock) { }
+#endif
 };
 
 // Use multiple parallel lists to decrease contention among unrelated objects.
