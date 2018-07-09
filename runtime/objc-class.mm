@@ -836,8 +836,11 @@ void	instrumentObjcMessageSends(BOOL flag)
 
 #else
 
+// [port] CHANGED: We don't support logging - see logMessageSend.
+#if !defined(OBJC_PORT)
 bool objcMsgLogEnabled = false;
 static int objcMsgLogFD = -1;
+#endif
 
 bool logMessageSend(bool isClassMethod,
                     const char *objectsClass,
@@ -1048,7 +1051,8 @@ _class_createInstancesFromZone(Class cls, size_t extraBytes, void *zone,
 void 
 inform_duplicate(const char *name, Class oldCls, Class newCls)
 {
-#if TARGET_OS_WIN32
+    // [port] CHANGED: "header_info::fname" is not implemented.
+#if TARGET_OS_WIN32 || defined(OBJC_PORT)
     (DebugDuplicateClasses ? _objc_fatal : _objc_inform)
         ("Class %s is implemented in two different images.", name);
 #else
