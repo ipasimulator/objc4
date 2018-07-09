@@ -1049,7 +1049,7 @@ class AutoreleasePoolPage
         else if (obj != POOL_BOUNDARY  &&  DebugMissingPools) {
             // We are pushing an object with no pool in place, 
             // and no-pool debugging was requested by environment.
-            // [port] CHANGED: There is a format error (with phtread_self()).
+            // [port] CHANGED: [format-error-pthread-self].
 #if !defined(OBJC_PORT)
             _objc_inform("MISSING POOLS: (%p) Object %p of class %s "
                          "autoreleased with no pool in place - "
@@ -1232,7 +1232,10 @@ public:
     static void printAll()
     {        
         _objc_inform("##############");
+        // [port] CHANGED: [format-error-pthread-self].
+#if !defined(OBJC_PORT)
         _objc_inform("AUTORELEASE POOLS for thread %p", pthread_self());
+#endif
 
         AutoreleasePoolPage *page;
         ptrdiff_t objects = 0;
@@ -1269,9 +1272,12 @@ public:
                 p->protect();
             }
             
+            // [port] CHANGED: [format-error-pthread-self].      
+#if !defined(OBJC_PORT)
             _objc_inform("POOL HIGHWATER: new high water mark of %u "
                          "pending releases for thread %p:", 
                          mark, pthread_self());
+#endif
             
             void *stack[128];
             int count = backtrace(stack, sizeof(stack)/sizeof(stack[0]));
