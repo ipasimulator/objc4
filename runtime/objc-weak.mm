@@ -28,7 +28,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <sys/types.h>
+// [port] CHANGED: Not needed.
+#if !defined(OBJC_PORT)
 #include <libkern/OSAtomic.h>
+#endif
 
 #define TABLE_SIZE(entry) (entry->mask ? entry->mask + 1 : 0)
 
