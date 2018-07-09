@@ -26,10 +26,16 @@
 
 
 #include "objc-private.h"
+// [port] CHANGED: [angle-brackets].
+#if defined(OBJC_PORT)
+#include "message.h"
+#else
 #include <objc/message.h>
+#endif
 #include <map>
 
-#if _LIBCPP_VERSION
+// [port] TODO: Why isn't _LIBCPP_VERSION defined (and does it matter elsewhere)?
+#if _LIBCPP_VERSION || defined(OBJC_PORT)
 #   include <unordered_map>
 #else
 #   include <tr1/unordered_map>
