@@ -1296,6 +1296,12 @@ public:
 #undef POOL_BOUNDARY
 };
 
+// [port] CHANGED: Let's define the key.
+// [port] TODO: Is this correctly done?
+#if defined(OBJC_PORT)
+pthread_key_t AutoreleasePoolPage::key;
+#endif
+
 // anonymous namespace
 };
 
