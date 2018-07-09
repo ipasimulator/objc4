@@ -24,7 +24,12 @@
 #ifndef __OBJC_SNYC_H_
 #define __OBJC_SNYC_H_
 
+// [port] CHANGED: [angle-brackets].
+#if defined(OBJC_PORT)
+#include "objc.h"
+#else
 #include <objc/objc.h>
+#endif
 
 
 /** 
