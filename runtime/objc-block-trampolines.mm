@@ -33,7 +33,10 @@
 #include "runtime.h"
 
 #include <Block.h>
+// [port] TODO: Is this needed?
+#if !defined(OBJC_PORT)
 #include <Block_private.h>
+#endif
 #include <mach/mach.h>
 
 // symbols defined in assembly files
