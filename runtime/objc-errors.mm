@@ -160,6 +160,27 @@ static void _objc_syslog(const char *message)
 #endif
 }
 
+// [port] CHANED: Porting vasprintf.
+// [port] Source: https://stackoverflow.com/a/49873938.
+#if defined(OBJC_PORT)
+int vasprintf(char **strp, const char *format, va_list ap)
+{
+    int len = _vscprintf(format, ap);
+    if (len == -1)
+        return -1;
+    char *str = (char*)malloc((size_t) len + 1);
+    if (!str)
+        return -1;
+    int retval = vsnprintf(str, len + 1, format, ap);
+    if (retval == -1) {
+        free(str);
+        return -1;
+    }
+    *strp = str;
+    return retval;
+}
+#endif
+
 /*
  * _objc_error is the default *_error handler.
  */
