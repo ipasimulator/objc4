@@ -28,7 +28,12 @@
 #ifndef _OBJC_LOAD_H_
 #define _OBJC_LOAD_H_
 
+// [port] CHANGED: [angle-brackets].
+#if defined(OBJC_PORT)
+#include "objc-class.h"
+#else
 #include <objc/objc-class.h>
+#endif
 
 #include <mach-o/loader.h>
 
