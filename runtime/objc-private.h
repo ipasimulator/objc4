@@ -908,14 +908,11 @@ class StripedMap {
         }
     }
 
-// [port] CHANGED: The .forceResest method is not implemented yet.
-#ifndef OBJC_PORT
     void forceResetAll() {
         for (unsigned int i = 0; i < StripeCount; i++) {
             array[i].value.forceReset();
         }
     }
-#endif
 
     void defineLockOrder() {
         for (unsigned int i = 1; i < StripeCount; i++) {

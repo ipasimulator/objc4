@@ -900,14 +900,24 @@ class mutex_tt : nocopy_t {
 
         os_unfair_lock_unlock_inline(&mLock);
     }
+#endif // [port] !OBJC_PORT
 
     void forceReset() {
+        // [port] CHANGED: Porting reset.
+        // [port] TODO: We probably should be able to reset even locked mutex.
+        // [port] See this for a possible implementation:
+        // [port] https://stackoverflow.com/a/29883165.
+#if defined(OBJC_PORT)
+        int err = pthread_mutex_destroy(&mLock);
+        if (err) _objc_fatal("pthread_mutex_destroy failed (%d)", err);
+        mLock = PTHREAD_MUTEX_INITIALIZER;
+#else
         lockdebug_mutex_unlock(this);
 
         bzero(&mLock, sizeof(mLock));
         mLock = os_unfair_lock OS_UNFAIR_LOCK_INIT;
+#endif
     }
-#endif // [port] !OBJC_PORT
 
     void assertLocked() {
         lockdebug_mutex_assert_locked(this);
