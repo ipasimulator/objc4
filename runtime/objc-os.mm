@@ -197,6 +197,10 @@ OBJC_EXPORT void _objc_unload_image(HMODULE image, header_info *hinfo)
 #include "objc-file-old.h"
 #include "objc-file.h"
 
+// [port] CHANGED: [no-direct-keys].
+#if defined(OBJC_PORT)
+pthread_key_t port_pthread_direct_keys::return_disposition_key;
+#endif
 
 /***********************************************************************
 * libobjc must never run static destructors. 
