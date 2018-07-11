@@ -467,6 +467,12 @@ static void removeAllUnattachedCategoriesForClass(Class cls)
     if (list) free(list);
 }
 
+// [port] TODO: Why is this needed?
+#if defined(OBJC_PORT)
+extern "C" objc_class OBJC_CLASS_$_Protocol;
+extern "C" objc_class OBJC_CLASS_$___IncompleteProtocol;
+extern "C" objc_class OBJC_CLASS_$_NSObject;
+#endif
 
 /***********************************************************************
 * classNSObject
