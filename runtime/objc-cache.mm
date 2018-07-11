@@ -551,7 +551,12 @@ static void cache_fill_nolock(Class cls, SEL sel, IMP imp, id receiver)
 
     // Make sure the entry wasn't added to the cache by some other thread 
     // before we grabbed the cacheUpdateLock.
+    // [port] CHANGED: See "objc-cache.h".
+#if defined(OBJC_PORT)
+    if (_cache_getImp(cls, sel)) return;
+#else
     if (cache_getImp(cls, sel)) return;
+#endif
 
     cache_t *cache = getCache(cls);
     cache_key_t key = getKey(sel);
