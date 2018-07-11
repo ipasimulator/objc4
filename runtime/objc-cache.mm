@@ -141,8 +141,16 @@ static void recordDeadCache(mask_t capacity)
 #define stringize(x) #x
 #define stringize2(x) stringize(x)
 
-// [port] CHANGED: Not supporting this.
-#if !defined(OBJC_PORT)
+// [port] CHANGED: Porting Mach-O-only directives.
+#if defined(OBJC_PORT)
+asm("\n .section __const"
+    "\n .globl __objc_empty_vtable"
+    "\n .set __objc_empty_vtable, 0"
+    "\n .globl __objc_empty_cache"
+    "\n .align 4" // [port] TODO: Is this OK?
+    "\n __objc_empty_cache: .space " stringize2(EMPTY_BYTES)
+    );
+#else
 // "cache" is cache->buckets; "vtable" is cache->mask/occupied
 // hack to avoid conflicts with compiler's internal declaration
 asm("\n .section __TEXT,__const"
