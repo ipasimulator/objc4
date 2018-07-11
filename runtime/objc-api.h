@@ -203,7 +203,8 @@
 #endif
 
 #if !defined(OBJC_VISIBLE)
-#   if TARGET_OS_WIN32
+    // [port] CHANGED: Exporting symbols the Windows way.
+#   if TARGET_OS_WIN32 || defined(OBJC_PORT)
 #       if defined(BUILDING_OBJC)
 #           define OBJC_VISIBLE __declspec(dllexport)
 #       else
