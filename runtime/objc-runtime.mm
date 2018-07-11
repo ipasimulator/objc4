@@ -468,6 +468,10 @@ objc_defaultForwardHandler(id self, SEL sel)
                 class_isMetaClass(object_getClass(self)) ? '+' : '-', 
                 object_getClassName(self), sel_getName(sel), self);
 }
+// [port] TODO: Why is this needed?
+#if defined(OBJC_PORT)
+extern "C"
+#endif
 void *_objc_forward_handler = (void*)objc_defaultForwardHandler;
 
 #if SUPPORT_STRET
@@ -477,6 +481,10 @@ objc_defaultForwardStretHandler(id self, SEL sel)
 {
     objc_defaultForwardHandler(self, sel);
 }
+// [port] TODO: Why is this needed?
+#if defined(OBJC_PORT)
+extern "C"
+#endif
 void *_objc_forward_stret_handler = (void*)objc_defaultForwardStretHandler;
 #endif
 
