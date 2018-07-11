@@ -146,14 +146,16 @@
 #endif
 
 // Define SUPPORT_MESSAGE_LOGGING to enable NSObjCMessageLoggingEnabled
-#if TARGET_OS_WIN32  ||  TARGET_OS_EMBEDDED
+// [port] CHANGED: Message logging uses undefined functions.
+#if TARGET_OS_WIN32  ||  TARGET_OS_EMBEDDED  ||  defined(OBJC_PORT)
 #   define SUPPORT_MESSAGE_LOGGING 0
 #else
 #   define SUPPORT_MESSAGE_LOGGING 1
 #endif
 
 // Define SUPPORT_QOS_HACK to work around deadlocks due to QoS bugs.
-#if !__OBJC2__  ||  TARGET_OS_WIN32  ||  OBJC_PORT // [port] CHANGED: We don't want to support qos hack right now.
+// [port] CHANGED: We don't want to support qos hack right now.
+#if !__OBJC2__  ||  TARGET_OS_WIN32  ||  defined(OBJC_PORT)
 #   define SUPPORT_QOS_HACK 0
 #else
 #   define SUPPORT_QOS_HACK 1
