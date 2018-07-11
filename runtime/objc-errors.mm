@@ -147,6 +147,14 @@ static bool also_do_stderr(void)
 }
 #endif
 
+// [port] CHANGED: Porting _simple_asl_log.
+// [port] TODO: Actually port it (maybe).
+#if defined(OBJC_PORT)
+void _simple_asl_log(int __level, const char *__facility, const char *__message) {
+    puts(__message);
+}
+#endif
+
 // Print "message" to the console.
 static void _objc_syslog(const char *message)
 {
