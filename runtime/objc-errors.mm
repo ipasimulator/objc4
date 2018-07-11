@@ -179,6 +179,14 @@ int vasprintf(char **strp, const char *format, va_list ap)
     *strp = str;
     return retval;
 }
+int asprintf(char **strp, const char *format, ...)
+{
+    va_list ap;
+    va_start(ap, format);
+    int retval = vasprintf(strp, format, ap);
+    va_end(ap);
+    return retval;
+}
 #endif
 
 /*
