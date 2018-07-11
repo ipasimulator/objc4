@@ -38,11 +38,21 @@
 
 // symbols defined in assembly files
 // Don't use the symbols directly; they're thumb-biased on some ARM archs.
+// [port] CHANGED: Otherwise, the symbol was imported C++-mangled, but is exported C-mangled.
+// [port] TODO: Why and how come the original works on macOS?
+#if defined(OBJC_PORT)
+#define TRAMP(tramp)                                \
+    extern "C" void *_##tramp;                      \
+    static inline __unused uintptr_t tramp(void) {  \
+        return ((uintptr_t)&_##tramp) & ~1UL;       \
+    }
+#else
 #define TRAMP(tramp)                                \
     static inline __unused uintptr_t tramp(void) {  \
         extern void *_##tramp;                      \
         return ((uintptr_t)&_##tramp) & ~1UL;       \
     }
+#endif
 // Scalar return
 TRAMP(a1a2_tramphead);   // trampoline header code
 TRAMP(a1a2_firsttramp);  // first trampoline
