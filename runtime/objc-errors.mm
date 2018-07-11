@@ -160,10 +160,10 @@ static void _objc_syslog(const char *message)
 #endif
 }
 
-// [port] CHANED: Porting vasprintf.
+// [port] CHANGED: Porting vasprintf.
 // [port] Source: https://stackoverflow.com/a/49873938.
 #if defined(OBJC_PORT)
-int vasprintf(char **strp, const char *format, va_list ap)
+static int vasprintf(char **strp, const char *format, va_list ap)
 {
     int len = _vscprintf(format, ap);
     if (len == -1)
@@ -179,7 +179,7 @@ int vasprintf(char **strp, const char *format, va_list ap)
     *strp = str;
     return retval;
 }
-int asprintf(char **strp, const char *format, ...)
+static int asprintf(char **strp, const char *format, ...)
 {
     va_list ap;
     va_start(ap, format);
