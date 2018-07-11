@@ -9,6 +9,7 @@ __BEGIN_DECLS
 // [port] TODO: WTF?
 #if defined(OBJC_PORT)
 extern IMP _cache_getImp(Class cls, SEL sel);
+#define cache_getImp _cache_getImp
 #else
 extern IMP cache_getImp(Class cls, SEL sel);
 #endif
