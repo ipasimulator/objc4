@@ -22,9 +22,14 @@
  */
 
 #include <TargetConditionals.h>
-#if defined(__i386__)  &&  TARGET_OS_SIMULATOR
+// [port] CHANGED: [i386-asm].
+#if defined(__i386__)  &&  (TARGET_OS_SIMULATOR  ||  defined(OBJC_PORT))
 
+#if defined(OBJC_PORT)
+#include "..\objc-config.h"
+#else
 #include "objc-config.h"
+#endif
 
 .data
 
@@ -340,7 +345,13 @@ LExit$0:
 
 1:
 	// loop
+	// [port] CHANGED: "cmpq" is for x64 only.
+	// [port] TODO: How could this work in the original code?
+#if defined(OBJC_PORT)
+	cmpl	$$1, (%eax)
+#else
 	cmpq	$$1, (%eax)
+#endif
 	jbe	3f			// if (bucket->sel <= 1) wrap or miss
 	
 	addl	$$8, %eax		// bucket++

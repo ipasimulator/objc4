@@ -22,7 +22,8 @@
  */
 
 #include <TargetConditionals.h>
-#if defined(__i386__)  &&  !TARGET_OS_SIMULATOR
+// [port] CHANGED: [i386-asm].
+#if defined(__i386__)  &&  !TARGET_OS_SIMULATOR  &&  !defined(OBJC_PORT)
 
 /********************************************************************
  ********************************************************************
