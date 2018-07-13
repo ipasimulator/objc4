@@ -394,10 +394,18 @@ LExit$0:
 	movl    selector_stret+4(%ebp), %ecx
 .endif
 	
+	// [port] CHANGED: [unaligned].
+#if defined(OBJC_PORT)
+	movdqu  %xmm3, 4*16(%esp)
+	movdqu  %xmm2, 3*16(%esp)
+	movdqu  %xmm1, 2*16(%esp)
+	movdqu  %xmm0, 1*16(%esp)
+#else
 	movdqa  %xmm3, 4*16(%esp)
 	movdqa  %xmm2, 3*16(%esp)
 	movdqa  %xmm1, 2*16(%esp)
 	movdqa  %xmm0, 1*16(%esp)
+#endif
 	
 	movl	%edx, 8(%esp)		// class
 	movl	%ecx, 4(%esp)		// selector
@@ -406,10 +414,18 @@ LExit$0:
 
 	// imp in eax
 
+	// [port] CHANGED: [unaligned].
+#if defined(OBJC_PORT)
+	movdqu  4*16(%esp), %xmm3
+	movdqu  3*16(%esp), %xmm2
+	movdqu  2*16(%esp), %xmm1
+	movdqu  1*16(%esp), %xmm0
+#else
 	movdqa  4*16(%esp), %xmm3
 	movdqa  3*16(%esp), %xmm2
 	movdqa  2*16(%esp), %xmm1
 	movdqa  1*16(%esp), %xmm0
+#endif
 
 .if $0 == NORMAL
 	cmp	%eax, %eax	// set eq for nonstret forwarding
