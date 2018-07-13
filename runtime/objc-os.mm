@@ -577,9 +577,14 @@ map_images_nolock(unsigned mhCount, const char * const mhPaths[],
 
     }
 
+    // [port] CHANGED: We want to call this anyway until we fully implement initialization.
+#if !defined(OBJC_PORT)
     if (hCount > 0) {
+#endif
         _read_images(hList, hCount, totalClasses, unoptimizedTotalClasses);
+#if !defined(OBJC_PORT)
     }
+#endif
 
     firstTime = NO;
 }
@@ -904,6 +909,12 @@ void _objc_init(void)
     // [port] https://opensource.apple.com/source/dyld/dyld-519.2.2/include/mach-o/dyld_priv.h.auto.html.
 #if !defined(OBJC_PORT)
     _dyld_objc_notify_register(&map_images, load_images, unmap_image);
+#endif
+
+    // [port] CHANGED: Calling at least some bits of map_images.
+    // [port] TODO: Remove, call it properly.
+#if defined(OBJC_PORT)
+    map_images(0, nullptr, nullptr);
 #endif
 }
 
