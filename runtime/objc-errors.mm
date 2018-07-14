@@ -228,8 +228,7 @@ void __objc_error(id rcv, const char *fmt, ...)
 
 // [port] CHANGED: Porting getpid.
 #if defined(OBJC_PORT)
-#include <process.h> // [port] for _getpid
-#define getpid _getpid
+#define getpid GetCurrentProcessId
 #endif
 
 static __attribute__((noreturn))
