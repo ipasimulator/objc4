@@ -639,15 +639,11 @@ unmap_image_nolock(const struct mach_header *mh)
 **********************************************************************/
 static void static_init()
 {
-    // [port] CHANGED: _mh_dylib_header is undefined.
-    // [port] TODO: Definitely port this.
-#if !defined(OBJC_PORT)
     size_t count;
     Initializer *inits = getLibobjcInitializers(&_mh_dylib_header, &count);
     for (size_t i = 0; i < count; i++) {
         inits[i]();
     }
-#endif
 }
 
 
