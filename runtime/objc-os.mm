@@ -577,14 +577,9 @@ map_images_nolock(unsigned mhCount, const char * const mhPaths[],
 
     }
 
-    // [port] CHANGED: We want to call this anyway until we fully implement initialization.
-#if !defined(OBJC_PORT)
     if (hCount > 0) {
-#endif
         _read_images(hList, hCount, totalClasses, unoptimizedTotalClasses);
-#if !defined(OBJC_PORT)
     }
-#endif
 
     firstTime = NO;
 }
