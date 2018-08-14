@@ -95,6 +95,7 @@ class nocopy_t {
 #include <mach-o/getsect.h> // [port] for getsectiondata
 #include <dlfcn.h> // [port] for dladdr
 #include <mach-o/ldsyms.h> // [port] for _mh_dylib_header
+#include <mach-o/dyld_priv.h> // [port] for _dyld_objc_notify_register
 #else
 #   include <stdio.h>
 #   include <stdlib.h>
