@@ -7,7 +7,7 @@
 
 #if __OBJC__
 
-// [port] CHANGE: Using "" instead of <>.
+// [port] CHANGED: [angle-brackets].
 #ifdef OBJC_PORT
 #include "objc.h"
 #include "NSObjCRuntime.h"
