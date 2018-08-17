@@ -2438,22 +2438,6 @@ void _read_images(header_info **hList, uint32_t hCount, int totalClasses, int un
 
     ts.log("IMAGE TIMES: discover classes");
 
-    // [port] CHANGED: [classrefs].
-#if defined(OBJC_PORT)
-    // Fix up classrefs.
-    for (EACH_HEADER) {
-        Class *classrefs = _getObjc2ClassRefs(hi, &count);
-        for (i = 0; i < count; i++) {
-            classrefs[i] = *(Class*)classrefs[i];
-        }
-        classrefs = _getObjc2SuperRefs(hi, &count);
-        for (i = 0; i < count; i++) {
-            classrefs[i] = *(Class*)classrefs[i];
-        }
-    }
-// defined(OBJC_PORT)
-#endif
-
     // Fix up remapped classes
     // Class list and nonlazy class list remain unremapped.
     // Class refs and super refs are remapped for message dispatching.
