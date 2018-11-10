@@ -385,7 +385,7 @@ struct header_info_rw* getPreoptimizedHeaderRW(const struct header_info *const h
 // [port] CHANGED: Porting dyld_image_path_containing_address using dladdr.
 // [port] Copied (and modified) from sym function in objc-lockdebug.mm.
 #if defined(OBJC_PORT)
-static const char* dyld_image_path_containing_address(const void* addr) {
+inline const char* dyld_image_path_containing_address(const void* addr) {
     Dl_info info;
     int ok = dladdr(addr, &info);
     if (ok && info.dli_fname && info.dli_fname[0]) return info.dli_fname;
