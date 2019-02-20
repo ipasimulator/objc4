@@ -148,10 +148,11 @@ static bool also_do_stderr(void)
 #endif
 
 // [port] CHANGED: Porting _simple_asl_log.
-// [port] TODO: Actually port it (maybe).
 #if defined(OBJC_PORT)
+__declspec(dllimport) void __stdcall OutputDebugStringA(const char *);
 void _simple_asl_log(int __level, const char *__facility, const char *__message) {
     puts(__message);
+    OutputDebugStringA(__message); // See #19.
 }
 #endif
 
