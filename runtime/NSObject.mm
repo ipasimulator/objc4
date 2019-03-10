@@ -2265,6 +2265,59 @@ void arr_init(void)
     return ((id(*)(id, SEL, id, id))objc_msgSend)(self, sel, obj1, obj2);
 }
 
+// [port] CHANGED: Copied from WinObjC's NSObject.
+#if defined(OBJC_PORT)
+
+/**
+ @Status Interoperable
+*/
++ (NSMethodSignature*)methodSignatureForSelector:(SEL)selector {
+    Class metaClass = object_getClass(self);
+    Method method = class_getInstanceMethod(metaClass, selector);
+
+    if (!method && [self resolveClassMethod:selector]) {
+        method = class_getInstanceMethod(metaClass, selector);
+    }
+
+    if (!method) {
+        //TraceWarning(L"Objective-C", L"+[%hs %hs]: unrecognized selector in signature lookup.", class_getName(self), sel_getName(selector));
+        return nil;
+    }
+
+    const char* methodTypes = method_getTypeEncoding(method);
+
+    return [objc_getClass("NSMethodSignature") signatureWithObjCTypes:methodTypes];
+}
+
+/**
+ @Status Interoperable
+*/
+- (NSMethodSignature*)methodSignatureForSelector:(SEL)selector {
+    return [[self class] instanceMethodSignatureForSelector:selector];
+}
+
+/**
+ @Status Interoperable
+*/
++ (NSMethodSignature*)instanceMethodSignatureForSelector:(SEL)selector {
+    Method method = class_getInstanceMethod(self, selector);
+
+    if (!method && [self resolveInstanceMethod:selector]) {
+        method = class_getInstanceMethod(self, selector);
+    }
+
+    if (!method) {
+        //TraceWarning(L"Objective-C", L"-[%hs %hs]: unrecognized selector in signature lookup.", class_getName(self), sel_getName(selector));
+        return nil;
+    }
+
+    const char* methodTypes = method_getTypeEncoding(method);
+
+    return [objc_getClass("NSMethodSignature") signatureWithObjCTypes:methodTypes];
+}
+
+// defined(OBJC_PORT)
+#else
 
 // Replaced by CF (returns an NSMethodSignature)
 + (NSMethodSignature *)instanceMethodSignatureForSelector:(SEL)sel {
@@ -2283,6 +2336,9 @@ void arr_init(void)
     _objc_fatal("-[NSObject methodSignatureForSelector:] "
                 "not available without CoreFoundation");
 }
+
+// !defined(OBJC_PORT)
+#endif
 
 + (void)forwardInvocation:(NSInvocation *)invocation {
     [self doesNotRecognizeSelector:(invocation ? [invocation selector] : 0)];
