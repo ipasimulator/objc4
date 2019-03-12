@@ -173,6 +173,12 @@ void remove_category_from_loadable_list(Category cat)
     }
 }
 
+// [port] CHANGED: See `IpaSimLibrary` for implementation.
+#if defined(OBJC_PORT)
+extern "C" __declspec(dllimport) void ipaSim_callLoad(void *load, void *self,
+                                                      void *sel);
+#endif
+
 
 /***********************************************************************
 * call_class_loads
@@ -201,13 +207,16 @@ static void call_class_loads(void)
         if (PrintLoading) {
             _objc_inform("LOAD: +[%s load]\n", cls->nameForLogging());
         }
+#if defined(OBJC_PORT)
+        ipaSim_callLoad((void *)load_method, cls, SEL_load);
+#else
         (*load_method)(cls, SEL_load);
+#endif
     }
     
     // Destroy the detached list.
     if (classes) free(classes);
 }
-
 
 /***********************************************************************
 * call_category_loads
@@ -248,7 +257,11 @@ static bool call_category_loads(void)
                              cls->nameForLogging(), 
                              _category_getName(cat));
             }
+#if defined(OBJC_PORT)
+            ipaSim_callLoad((void *)load_method, cls, SEL_load);
+#else
             (*load_method)(cls, SEL_load);
+#endif
             cats[i].cat = nil;
         }
     }
