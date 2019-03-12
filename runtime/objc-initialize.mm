@@ -548,7 +548,8 @@ void _class_initialize(Class cls)
         // Only __OBJC2__ adds these handlers. !__OBJC2__ has a
         // bootstrapping problem of this versus CF's call to
         // objc_exception_set_functions().
-#if __OBJC2__
+// [port] CHANGED: [format-error-pthread-self].
+#if __OBJC2__ && !defined(OBJC_PORT)
         @try
 #endif
         {
@@ -562,16 +563,14 @@ void _class_initialize(Class cls)
             }
 #endif
         }
-#if __OBJC2__
-        @catch (...) {
 // [port] CHANGED: [format-error-pthread-self].
-#if !defined(OBJC_PORT)
+#if __OBJC2__ && !defined(OBJC_PORT)
+        @catch (...) {
             if (PrintInitializing) {
                 _objc_inform("INITIALIZE: thread %p: +[%s initialize] "
                              "threw an exception",
                              pthread_self(), cls->nameForLogging());
             }
-#endif
             @throw;
         }
         @finally
