@@ -441,6 +441,11 @@ Ivar object_getInstanceVariable(id obj, const char *name, void **value)
     return nil;
 }
 
+// [port] CHANGED: See `IpaSimLibrary` for implementation.
+#if defined(OBJC_PORT)
+extern "C" __declspec(dllimport) void ipaSim_callBack1(void *FP, void *arg0);
+#endif
+
 
 /***********************************************************************
 * object_cxxDestructFromClass.
@@ -464,7 +469,11 @@ static void object_cxxDestructFromClass(id obj, Class cls)
                 _objc_inform("CXX: calling C++ destructors for class %s", 
                              cls->nameForLogging());
             }
+#if defined(OBJC_PORT)
+            ipaSim_callBack1((void *)dtor, obj);
+#else
             (*dtor)(obj);
+#endif
         }
     }
 }
