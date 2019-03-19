@@ -1687,11 +1687,20 @@ objc_object::sidetable_clearDeallocating()
 
 #if __OBJC2__
 
+// [port] CHANGED: Defined in `stubs.mm`. See #27.
+#if defined(OBJC_PORT)
+extern bool dispatch_is_dispatch_object(const void *);
+#endif
+
 __attribute__((aligned(16)))
 id 
 objc_retain(id obj)
 {
     if (!obj) return obj;
+    // [port] CHANGED: See #27.
+#if defined(OBJC_PORT)
+    if (dispatch_is_dispatch_object(obj)) return obj;
+#endif
     if (obj->isTaggedPointer()) return obj;
     return obj->retain();
 }
@@ -1702,6 +1711,10 @@ void
 objc_release(id obj)
 {
     if (!obj) return;
+    // [port] CHANGED: See #27.
+#if defined(OBJC_PORT)
+    if (dispatch_is_dispatch_object(obj)) return;
+#endif
     if (obj->isTaggedPointer()) return;
     return obj->release();
 }
@@ -1712,6 +1725,10 @@ id
 objc_autorelease(id obj)
 {
     if (!obj) return obj;
+    // [port] CHANGED: See #27.
+#if defined(OBJC_PORT)
+    if (dispatch_is_dispatch_object(obj)) return obj;
+#endif
     if (obj->isTaggedPointer()) return obj;
     return obj->autorelease();
 }
