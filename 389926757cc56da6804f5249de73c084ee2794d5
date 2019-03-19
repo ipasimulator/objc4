@@ -1,0 +1,6 @@
+[ver:1,total:1080]
+runtime/objc-class.mm:770,1553004000:770,m
+runtime/NSObject.mm:230,1553004000:230,r
+runtime/objc-loadmethod.mm:40,1553004000:40,r
+runtime/objc-object.h:20,1553004000:20,r
+runtime/objc-runtime-new.h:20,1553004000:20,r
