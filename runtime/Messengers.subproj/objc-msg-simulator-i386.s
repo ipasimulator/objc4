@@ -296,12 +296,9 @@ LExit$0:
 .if $1 == CALL
 	MESSENGER_END_FAST
 
-    // [port] CHANGED: Added this block of code.
-    pushl	%eax
-    call	_ipaSim_translate4
-    popl	%eax
-
-	jmp	*4(%eax)		// call imp
+    // [port] CHANGED: `jmp *` -> `pushl ` + `jmp`.
+	pushl	4(%eax)		// call imp
+	jmp	_ipaSim_jumpBack
 
 .elseif $1 == LOOKUP
 	movl	4(%eax), %eax		// return imp
@@ -923,12 +920,9 @@ LCacheMiss:
 	// edx is already the class to search
 	MethodTableLookup NORMAL
 
-    // [port] CHANGED: Added this block of code.
-    pushl	%eax
-    call	_ipaSim_translate
-    addl	$4, %esp
-
-	jmp	*%eax		// call imp
+	// [port] CHANGED: `jmp *` -> `pushl ` + `jmp`.
+	pushl	%eax		// call imp
+	jmp	_ipaSim_jumpBack
 
 	END_ENTRY __objc_msgSend_uncached
 
@@ -942,12 +936,9 @@ LCacheMiss:
 	// edx is already the class to search
 	MethodTableLookup STRET
 
-    // [port] CHANGED: Added this block of code.
-    pushl	%eax
-    call	_ipaSim_translate
-    addl	$4, %esp
-
-	jmp	*%eax		// call imp
+	// [port] CHANGED: `jmp *` -> `pushl ` + `jmp`.
+	pushl	%eax		// call imp
+	jmp	_ipaSim_jumpBack
 
 	END_ENTRY __objc_msgSend_stret_uncached
 
@@ -1068,12 +1059,9 @@ L_forward_stret_handler:
 	movl	method_imp(%ecx), %eax
 	movl	%edx, selector(%esp)
 
-    // [port] CHANGED: Added this block of code.
-    pushl	%eax
-    call	_ipaSim_translate
-    addl	$4, %esp
-
-	jmp	*%eax
+	// [port] CHANGED: `jmp *` -> `pushl ` + `jmp`.
+	pushl	%eax
+	jmp	_ipaSim_jumpBack
 	
 	END_ENTRY _method_invoke
 
@@ -1085,12 +1073,9 @@ L_forward_stret_handler:
 	movl	method_imp(%ecx), %eax
 	movl	%edx, selector_stret(%esp)
 
-    // [port] CHANGED: Added this block of code.
-    pushl	%eax
-    call	_ipaSim_translate
-    addl	$4, %esp
-
-	jmp	*%eax
+	// [port] CHANGED: `jmp *` -> `pushl ` + `jmp`.
+	pushl	%eax
+	jmp	_ipaSim_jumpBack
 	
 	END_ENTRY _method_invoke_stret
 	
