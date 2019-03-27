@@ -1,0 +1,7 @@
+[ver:1,total:1800]
+runtime/objc-runtime-new.mm:720,1553425200:180,1553500800:180,1553504400:180,1553511600:180,r
+runtime/Messengers.subproj/objc-msg-i386.s:360,1553601600:180,1553605200:180,r
+runtime/NSObject.mm:300,1553594400:300,r
+runtime/Messengers.subproj/objc-msg-simulator-i386.s:240,1553367600:240,r
+runtime/objc-loadmethod.mm:150,1553688000:150,m
+runtime/objc-class.mm:30,1553688000:30,m
