@@ -443,7 +443,7 @@ Ivar object_getInstanceVariable(id obj, const char *name, void **value)
 
 // [port] CHANGED: See `IpaSimLibrary` for implementation.
 #if defined(OBJC_PORT)
-extern "C" __declspec(dllimport) void ipaSim_callBack1(void *FP, void *arg0);
+extern "C" __declspec(dllimport) void ipaSim_callBack1(void *FP, void *Arg0);
 #endif
 
 

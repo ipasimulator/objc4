@@ -175,8 +175,8 @@ void remove_category_from_loadable_list(Category cat)
 
 // [port] CHANGED: See `IpaSimLibrary` for implementation.
 #if defined(OBJC_PORT)
-extern "C" __declspec(dllimport) void ipaSim_callLoad(void *load, void *self,
-                                                      void *sel);
+extern "C" __declspec(dllimport) void ipaSim_callBack2(void *FP, void *Arg0,
+                                                       void *Arg1);
 #endif
 
 
@@ -208,7 +208,7 @@ static void call_class_loads(void)
             _objc_inform("LOAD: +[%s load]\n", cls->nameForLogging());
         }
 #if defined(OBJC_PORT)
-        ipaSim_callLoad((void *)load_method, cls, SEL_load);
+        ipaSim_callBack2((void *)load_method, cls, SEL_load);
 #else
         (*load_method)(cls, SEL_load);
 #endif
@@ -258,7 +258,7 @@ static bool call_category_loads(void)
                              _category_getName(cat));
             }
 #if defined(OBJC_PORT)
-            ipaSim_callLoad((void *)load_method, cls, SEL_load);
+            ipaSim_callBack2((void *)load_method, cls, SEL_load);
 #else
             (*load_method)(cls, SEL_load);
 #endif
